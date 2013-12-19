@@ -55,7 +55,8 @@
         android:layout_marginLeft="8dip"
         android:layout_marginTop="8dip"
         android:layout_toRightOf="@+id/albumCoverFrame"
-        android:ellipsize="end"
+        android:ellipsize="marquee"
+        android:scrollHorizontally="true"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -68,7 +69,8 @@
         android:layout_marginBottom="10dip"
         android:layout_marginLeft="8dip"
         android:layout_toRightOf="@+id/albumCoverFrame"
-        android:ellipsize="end"
+        android:ellipsize="marquee"
+        android:scrollHorizontally="true"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />

@@ -433,6 +433,8 @@ public class SongsFragment extends BrowseFragment<Music> {
             final String artist = fixedAlbumInfo.getArtistName();
             mHeaderArtist.setText(artist);
             mHeaderInfo.setText(getHeaderInfoString());
+            mHeaderArtist.setSelected(true);
+            mHeaderInfo.setSelected(true);
             if (mCoverHelper != null) {
                 mCoverHelper.downloadCover(fixedAlbumInfo, true);
             } else {
