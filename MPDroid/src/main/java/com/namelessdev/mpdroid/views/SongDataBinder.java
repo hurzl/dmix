@@ -84,11 +84,14 @@ public class SongDataBinder<T extends Item<T>> implements ArrayDataBinder<T> {
         track.append(trackNumber);
 
         holder.mTrackTitle.setText(song.getTitle());
-        holder.mTrackNumber.setText(track);
+        holder.mTrackTitle.setSelected(true);
+        holder.mTrackNumber.setText(trackNumber < 10 ? '0' + Integer.toString(trackNumber) : Integer
+                .toString(trackNumber));
         holder.mTrackDuration.setText(song.getFormattedTime());
 
         if (mShowArtist) {
             holder.mTrackArtist.setText(song.getArtistName());
+            holder.mTrackArtist.setSelected(true);
         }
     }
 
