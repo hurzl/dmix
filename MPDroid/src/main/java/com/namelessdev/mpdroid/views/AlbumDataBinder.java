@@ -135,12 +135,14 @@ public class AlbumDataBinder<T extends Item<T>> extends BaseDataBinder<T> {
 
         // display "artist - album title"
         holder.mAlbumName.setText(album.mainText());
+        holder.mAlbumName.setSelected(true);
         if (info.length() == 0) {
             holder.mAlbumInfo.setVisibility(View.GONE);
         } else {
             holder.mAlbumInfo.setVisibility(View.VISIBLE);
             holder.mAlbumInfo.setText(info);
         }
+        holder.mAlbumInfo.setSelected(true);
 
         loadAlbumCovers(holder, album);
     }
