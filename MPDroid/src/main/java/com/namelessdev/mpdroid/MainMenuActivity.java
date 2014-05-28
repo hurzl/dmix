@@ -23,6 +23,7 @@ import com.namelessdev.mpdroid.fragments.LibraryFragment;
 import com.namelessdev.mpdroid.fragments.OutputsFragment;
 import com.namelessdev.mpdroid.fragments.QueueFragment;
 import com.namelessdev.mpdroid.helpers.MPDConnectionHandler;
+import com.namelessdev.mpdroid.fragments.CollapsedPlaylistFragment;
 import com.namelessdev.mpdroid.helpers.MPDControl;
 import com.namelessdev.mpdroid.library.ILibraryFragmentActivity;
 import com.namelessdev.mpdroid.library.ILibraryTabActivity;
@@ -136,7 +137,7 @@ public class MainMenuActivity extends MPDroidActivities.MPDroidActivity implemen
 
     private View mOutputsRootFrame;
 
-    private QueueFragment mQueueFragment;
+    private CollapsedPlaylistFragment mQueueFragment;
 
     private SlidingUpPanelLayout mSlidingLayout;
 
@@ -516,7 +517,7 @@ public class MainMenuActivity extends MPDroidActivities.MPDroidActivity implemen
 
         mLibraryFragment = initializeLibraryFragment();
         mOutputsFragment = initializeOutputsFragment();
-        mQueueFragment = (QueueFragment) mFragmentManager.findFragmentById(R.id.queue_fragment);
+        mQueueFragment = (CollapsedPlaylistFragment) mFragmentManager.findFragmentById(R.id.queue_fragment);
 
         // Setup the pager
         mNowPlayingPager = initializeNowPlayingPager();
