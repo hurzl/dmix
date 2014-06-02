@@ -179,6 +179,8 @@ public class UpdateTrackInfo {
                     }
 
                     mTitle = mCurrentTrack.getTitle();
+                    addDiscAndTrackNumber();
+
                     setArtist();
                     mAlbumInfo = new AlbumInfo(mCurrentTrack);
                 }
@@ -282,6 +284,18 @@ public class UpdateTrackInfo {
                     + mCurrentTrack + ", mDate='" + mDate + '\'' + ", mHasCoverChanged="
                     + mHasCoverChanged + ", mTitle='" + mTitle + '\'' + ", mTrackRating="
                     + mTrackRating + '}';
+        }
+
+        private void addDiscAndTrackNumber() {
+            final int tracknum = mCurrentTrack.getTrack();
+            final int discnum  = mCurrentTrack.getDisc();
+            if (tracknum > - 1) {
+                mTitle = tracknum+"] " + mTitle;
+                if (discnum > - 1) {
+                    mTitle = discnum+":" + mTitle;
+                }
+                mTitle = "[" + mTitle;
+            }
         }
     }
 }
