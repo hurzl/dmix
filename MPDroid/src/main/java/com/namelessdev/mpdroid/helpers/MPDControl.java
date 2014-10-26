@@ -307,7 +307,17 @@ public final class MPDControl {
                             mpd.play();
                             break;
                         case ACTION_PREVIOUS:
-                            mpd.previous();
+                            if (mpd.getStatus().getElapsedTime() < 5) {
+                                mpd.previous();
+                            } else {
+                                final int songPos = mpd.getStatus().getSongPos();
+                                final Music music = mpd.getPlaylist().getByIndex(songPos);
+                                if (music.isStream()) {
+                                    mpd.previous();
+                                } else {
+                                    mpd.seek(0);
+                                }
+                            }
                             break;
                         case ACTION_RATING_SET:
                             if (l != INVALID_LONG) {
