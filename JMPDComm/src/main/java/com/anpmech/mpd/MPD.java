@@ -52,8 +52,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import static com.anpmech.mpd.Tools.KEY;
 import static com.anpmech.mpd.Tools.VALUE;
@@ -148,6 +151,23 @@ public class MPD {
 
         return MPDCommand.create(MPDCommand.MPD_CMD_FIND, Music.TAG_ALBUM, album.getName(),
                 artistPair[0], artistPair[1]);
+    }
+
+    private static MPDCommand getSongsCommand(final Artist artist, boolean useAlbumArtist) {
+        String artistName = null;
+        String artistCommand = null;
+
+        if (artist != null) {
+            artistName = artist.getName();
+
+            if (useAlbumArtist) {
+                artistCommand = Music.TAG_ALBUM_ARTIST;
+            } else {
+                artistCommand = Music.TAG_ARTIST;
+            }
+        }
+
+        return MPDCommand.create(MPDCommand.MPD_CMD_FIND, artistCommand, artistName);
     }
 
     /*
@@ -1102,11 +1122,18 @@ public class MPD {
     }
 
     public List<Music> getSongs(final Artist artist) throws IOException, MPDException {
-        final List<Album> albums = getAlbums(artist, false, false);
-        final List<Music> songs = new ArrayList<>(albums.size());
-        for (final Album album : albums) {
+        /* first get all songs of the albums of the artist as album artist */
+        final List<Album> aa_albums = getAlbums(artist, false, false, true);
+        List<Music> songs = new ArrayList<>(aa_albums.size());
+        for (final Album album : aa_albums) {
             songs.addAll(getSongs(album));
         }
+        /* add songs of the artist as artist */
+        final Set<Music> songset = new LinkedHashSet<>(songs); // avoid duplicates
+        final List<Music> a_songs = MusicBuilder.buildMusicFromList
+            (mConnection.send(getSongsCommand(artist, false)), false);
+        songset.addAll(a_songs);
+        songs = new ArrayList<>(songset);
         return songs;
     }
 
