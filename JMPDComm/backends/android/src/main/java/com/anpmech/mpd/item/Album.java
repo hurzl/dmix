@@ -52,18 +52,20 @@ public class Album extends AbstractAlbum<Album> implements Parcelable {
     public static final String EXTRA = AbstractAlbum.TAG;
 
     protected Album(final String name, final Artist artist, final boolean hasAlbumArtist,
-            final long songCount, final long duration, final long year, final String path) {
-        super(name, artist, hasAlbumArtist, songCount, duration, year, path);
+                    final long songCount, final long duration, final long year, final String path,
+                    final long lastMod) {
+        super(name, artist, hasAlbumArtist, songCount, duration, year, path, lastMod);
     }
 
     protected Album(final Parcel in) {
         super(in.readString(), /** name */
-                new Artist(in.readString()), /** artist */
-                in.readInt() > 0, /** hasAlbumArtist */
-                in.readLong(), /** songCount */
-                in.readLong(), /** duration */
-                in.readLong(), /** year */
-                in.readString()); /** path */
+              new Artist(in.readString()), /** artist */
+              in.readInt() > 0, /** hasAlbumArtist */
+              in.readLong(), /** songCount */
+              in.readLong(), /** duration */
+              in.readLong(), /** year */
+              in.readString(), /** path */
+              in.readLong()); /** lastmod */
     }
 
     @Override
@@ -96,5 +98,6 @@ public class Album extends AbstractAlbum<Album> implements Parcelable {
         dest.writeLong(getDuration());
         dest.writeLong(getDate());
         dest.writeString(getPath());
+        dest.writeLong(getLastMod());
     }
 }
