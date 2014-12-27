@@ -72,6 +72,7 @@ public final class MusicBuilder {
         int track = AbstractMusic.UNDEFINED_INT;
         int songId = AbstractMusic.UNDEFINED_INT;
         int songPos = AbstractMusic.UNDEFINED_INT;
+        long lastMod = -1L;
         String name = null;
 
         for (final String[] pair : Tools.splitResponse(response)) {
@@ -135,6 +136,9 @@ public final class MusicBuilder {
                         Log.error(TAG, "Not a valid time number.", e);
                     }
                     break;
+                case AbstractMusic.RESPONSE_LASTMOD:
+                    lastMod = parseDate(pair[VALUE]);
+                    break;
                 case AbstractMusic.RESPONSE_TITLE:
                     title = pair[VALUE];
                     break;
@@ -162,7 +166,7 @@ public final class MusicBuilder {
         }
 
         return new Music(albumName, albumArtistName, artistName, composerName, date, disc, fileName,
-                genreName, name, songId, songPos, time, title, totalTracks, track);
+                genreName, name, songId, songPos, time, title, totalTracks, track, lastMod);
     }
 
     /**

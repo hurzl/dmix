@@ -61,11 +61,11 @@ public class Music extends AbstractMusic<Music> implements Parcelable {
     }
 
     Music(final String album, final String albumArtist, final String artist, final String composer,
-            final long date, final int disc, final String fullPath, final String genre,
-            final String name, final int songId, final int songPos, final long time,
-            final String title, final int totalTracks, final int track) {
+          final long date, final int disc, final String fullPath, final String genre,
+          final String name, final int songId, final int songPos, final long time,
+          final String title, final int totalTracks, final int track, final long lastMod) {
         super(album, albumArtist, artist, composer, date, disc, fullPath, genre, name, songId,
-                songPos, time, title, totalTracks, track);
+              songPos, time, title, totalTracks, track, lastMod);
     }
 
     /**
@@ -76,8 +76,9 @@ public class Music extends AbstractMusic<Music> implements Parcelable {
      */
     protected Music(final Parcel in) {
         super(in.readString(), in.readString(), in.readString(), in.readString(), in.readLong(),
-                in.readInt(), in.readString(), in.readString(), in.readString(), in.readInt(),
-                in.readInt(), in.readLong(), in.readString(), in.readInt(), in.readInt());
+              in.readInt(), in.readString(), in.readString(), in.readString(), in.readInt(),
+              in.readInt(), in.readLong(), in.readString(), in.readInt(), in.readInt(),
+              in.readLong());
     }
 
     @Override
@@ -126,5 +127,6 @@ public class Music extends AbstractMusic<Music> implements Parcelable {
         dest.writeString(mTitle);
         dest.writeInt(mTotalTracks);
         dest.writeInt(mTrack);
+        dest.writeLong(mLastMod);
     }
 }

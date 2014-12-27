@@ -149,6 +149,11 @@ abstract class AbstractMusic<T extends Music> extends Item<Music> implements Fil
     public static final String RESPONSE_TRACK = "Track";
 
     /**
+     * The media server response key returned for a {@link #mLastMod} value.
+     */
+    public static final String RESPONSE_LASTMOD = "Last-Modified";
+
+    /**
      * The string used to refer to an album tag.
      */
     public static final String TAG_ALBUM = "album";
@@ -293,39 +298,45 @@ abstract class AbstractMusic<T extends Music> extends Item<Music> implements Fil
     final int mTrack;
 
     /**
+     * This field is the storage for the last modification date of this track.
+     */
+    protected long mLastMod;
+
+    /**
      * The empty constructor for this item. Used for cases where null checks aren't possible.
      */
     AbstractMusic() {
         this(null, /** AlbumName */
-                null, /** AlbumArtistName */
-                null, /** ArtistName */
-                null, /** ComposerName */
-                -1L, /** Date */
-                UNDEFINED_INT, /** Disc */
-                null, /** FullPath */
-                null, /** GenreName */
-                null, /** Name */
-                UNDEFINED_INT, /** SongID */
-                UNDEFINED_INT, /** SongPos */
-                -1L, /** Time */
-                null, /** Title */
-                UNDEFINED_INT, /** TotalTracks*/
-                UNDEFINED_INT /** Track */
-        );
+             null, /** AlbumArtistName */
+             null, /** ArtistName */
+             null, /** ComposerName */
+             -1L, /** Date */
+             UNDEFINED_INT, /** Disc */
+             null, /** FullPath */
+             null, /** GenreName */
+             null, /** Name */
+             UNDEFINED_INT, /** SongID */
+             UNDEFINED_INT, /** SongPos */
+             -1L, /** Time */
+             null, /** Title */
+             UNDEFINED_INT, /** TotalTracks*/
+             UNDEFINED_INT, /** Track */
+             -1L  /** Last Modified */
+             );
 
     }
 
     AbstractMusic(final T music) {
         this(music.mAlbumName, music.mAlbumArtistName, music.mArtistName, music.mComposerName,
-                music.mDate, music.mDisc, music.mFullPath, music.mGenreName, music.mName,
-                music.mSongId, music.mSongPos, music.mTime, music.mTitle, music.mTotalTracks,
-                music.mTrack);
+             music.mDate, music.mDisc, music.mFullPath, music.mGenreName, music.mName,
+             music.mSongId, music.mSongPos, music.mTime, music.mTitle, music.mTotalTracks,
+             music.mTrack, music.mLastMod);
     }
 
     AbstractMusic(final String albumName, final String albumArtistName, final String artistName,
-            final String composerName, final long date, final int disc, final String fullPath,
-            final String genreName, final String name, final int songId, final int songPos,
-            final long time, final String title, final int totalTracks, final int track) {
+                  final String composerName, final long date, final int disc, final String fullPath,
+                  final String genreName, final String name, final int songId, final int songPos,
+                  final long time, final String title, final int totalTracks, final int track, final long lastMod) {
         super();
 
         mAlbumName = albumName;
@@ -343,6 +354,7 @@ abstract class AbstractMusic<T extends Music> extends Item<Music> implements Fil
         mSongId = songId;
         mSongPos = songPos;
         mName = name;
+        mLastMod = lastMod;
     }
 
     /**
@@ -500,7 +512,8 @@ abstract class AbstractMusic<T extends Music> extends Item<Music> implements Fil
                     {mTrack, music.mTrack}
             };
 
-            if (mDate != music.mDate || mTime != music.mTime || Tools.isNotEqual(equalsInt)) {
+            if (mDate != music.mDate || mTime != music.mTime ||
+                mLastMod != music.mDate || Tools.isNotEqual(equalsInt)) {
                 isEqual = Boolean.FALSE;
             }
 
@@ -828,6 +841,21 @@ abstract class AbstractMusic<T extends Music> extends Item<Music> implements Fil
      */
     public boolean isStream() {
         return mFullPath != null && mFullPath.contains("://");
+    }
+
+
+    /*
+     * set last modification date
+     */
+    public void setLastMod(final long lastmod) {
+        mLastMod = lastmod;
+    }
+
+    /*
+     * get last modification date
+     */
+    public long getLastMod() {
+        return mLastMod;
     }
 
     /**
