@@ -106,6 +106,7 @@ public final class MusicBuilder {
                         Log.warning(TAG, "Not a valid disc number.", e);
                     }
                     break;
+                case AbstractMusic.RESPONSE_DIRECTORY:
                 case AbstractMusic.RESPONSE_FILE:
                     fileName = pair[VALUE];
                     break;
@@ -180,8 +181,17 @@ public final class MusicBuilder {
         final Collection<int[]> ranges = Tools.getRanges(response);
         final List<Music> result = new ArrayList<>(ranges.size());
 
+        // find "directory:" keyword and remove from range
         for (final int[] range : ranges) {
-            result.add(build(response.subList(range[0], range[1])));
+            int end;
+            for (end = range[0]; end < range[1]; end++) {
+                final String line = response.get(end);
+                if (AbstractMusic.RESPONSE_DIRECTORY.equals
+                    (line.substring(0, line.indexOf(':')))) {
+                    break;
+                }
+            }
+            result.add(build(response.subList(range[0], end)));
         }
 
         if (sort) {

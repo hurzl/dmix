@@ -113,6 +113,11 @@ abstract class AbstractMusic<T extends Music> extends Item<Music> implements Fil
     public static final String RESPONSE_FILE = "file";
 
     /**
+     * The media server response key returned for a {@link #mFullPath} value on directories.
+     */
+    public static final String RESPONSE_DIRECTORY = "directory";
+
+    /**
      * The media server response key returned for a {@link #mGenreName} value.
      */
     public static final String RESPONSE_GENRE = "Genre";
