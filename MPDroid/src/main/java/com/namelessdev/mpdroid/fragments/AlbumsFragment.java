@@ -23,6 +23,7 @@ import com.anpmech.mpd.item.Genre;
 import com.anpmech.mpd.item.Music;
 import com.anpmech.mpd.item.PlaylistFile;
 import com.namelessdev.mpdroid.R;
+import com.namelessdev.mpdroid.adapters.ArrayAdapter;
 import com.namelessdev.mpdroid.adapters.ArrayIndexerAdapter;
 import com.namelessdev.mpdroid.helpers.AlbumInfo;
 import com.namelessdev.mpdroid.helpers.CoverAsyncHelper;
@@ -57,6 +58,8 @@ public class AlbumsFragment extends BrowseFragment<Album> {
 
     private static final String ALBUM_YEAR_SORT_KEY = "sortAlbumsByYear";
     private static final String ALBUM_LASTMOD_SORT_KEY = "sortAlbumsByLastMod";
+
+    protected boolean mUseArrayIndexerAdapter = true;
 
     private static final String SHOW_ALBUM_TRACK_COUNT_KEY = "showAlbumTrackCount";
 
@@ -122,6 +125,7 @@ public class AlbumsFragment extends BrowseFragment<Album> {
         final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mApp);
         final boolean sortByYear = settings.getBoolean(ALBUM_YEAR_SORT_KEY, false);
         final boolean sortByLastMod = settings.getBoolean(ALBUM_LASTMOD_SORT_KEY, false);
+        mUseArrayIndexerAdapter = !(sortByYear || sortByLastMod);
 
         try {
             mItems = mApp.oMPDAsyncHelper.oMPD.getAlbums(mArtist, sortByYear | sortByLastMod, mIsCountDisplayed); // (sortByYear | sortByLastMod) will make it add album details
@@ -175,12 +179,16 @@ public class AlbumsFragment extends BrowseFragment<Album> {
         final ListAdapter listAdapter;
 
         if (mItems != null) {
-            listAdapter =
-                    new ArrayIndexerAdapter<>(getActivity(), new AlbumDataBinder<Album>(), mItems);
+            if (mUseArrayIndexerAdapter) {
+                listAdapter = new ArrayIndexerAdapter(getActivity(),
+                                                      new AlbumDataBinder<Album>(), mItems);
+            } else {
+                listAdapter = new ArrayAdapter(getActivity(),
+                                               new AlbumDataBinder<Album>(), mItems);
+            }
         } else {
             listAdapter = super.getCustomListAdapter();
         }
-
         return listAdapter;
     }
 
