@@ -210,17 +210,18 @@ public class SearchActivity extends MPDroidActivity implements OnMenuItemClickLi
                 mSongResults.add(music);
             }
             valueFound = false;
-            Artist artist = music.getAlbumArtist();
-            if (artist == null || artist.isUnknown()) {
-                artist = music.getArtist();
-            }
-            if (artist != null) {
-                final String name = artist.getName();
-                if (name != null) {
-                    tmpValue = name.toLowerCase();
-                    if (tmpValue.contains(finalSearch)) {
-                        if (!mArtistResults.contains(artist)) {
-                            mArtistResults.add(artist);
+            Artist artists[] = new Artist[2];
+            artists[0] = music.getAlbumArtist();
+            artists[1] = music.getArtist();
+            for (Artist artist : artists) {
+                if (artist != null && !artist.isUnknown()) {
+                    final String name = artist.getName();
+                    if (name != null) {
+                        tmpValue = name.toLowerCase();
+                        if (tmpValue.contains(finalSearch)) {
+                            if (!mArtistResults.contains(artist)) {
+                                mArtistResults.add(artist);
+                            }
                         }
                     }
                 }
