@@ -219,14 +219,7 @@ public class SearchActivity extends MPDroidActivity implements OnMenuItemClickLi
                 if (name != null) {
                     tmpValue = name.toLowerCase();
                     if (tmpValue.contains(finalSearch)) {
-                        for (final Artist artistItem : mArtistResults) {
-                            final String artistItemName = artistItem.getName();
-                            if (artistItemName != null &&
-                                    artistItemName.equalsIgnoreCase(tmpValue)) {
-                                valueFound = true;
-                            }
-                        }
-                        if (!valueFound) {
+                        if (!mArtistResults.contains(artist)) {
                             mArtistResults.add(artist);
                         }
                     }
@@ -238,11 +231,9 @@ public class SearchActivity extends MPDroidActivity implements OnMenuItemClickLi
             if (album != null) {
                 final String albumName = album.getName();
                 if (albumName != null) {
-                    tmpValue = albumName.toLowerCase();
-                    if (tmpValue.contains(finalSearch)) {
+                    if (albumName.toLowerCase().contains(finalSearch)) {
                         for (final Album albumItem : mAlbumResults) {
-                            final String albumItemName = albumItem.getName();
-                            if (albumItemName.equalsIgnoreCase(tmpValue)) {
+                            if (albumItem.getName().equals(albumName)) {
                                 valueFound = true;
                             }
                         }
