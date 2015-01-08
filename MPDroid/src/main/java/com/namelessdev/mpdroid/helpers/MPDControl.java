@@ -74,6 +74,9 @@ public final class MPDControl {
 
     public static final String ACTION_SEEK = FULLY_QUALIFIED_NAME + "SEEK";
 
+    public static final String ACTION_FF  = FULLY_QUALIFIED_NAME + "FF";
+    public static final String ACTION_REW = FULLY_QUALIFIED_NAME + "REW";
+
     public static final String ACTION_VOLUME_SET = FULLY_QUALIFIED_NAME + "SET_VOLUME";
 
     public static final String ACTION_SINGLE = FULLY_QUALIFIED_NAME + "SINGLE";
@@ -148,6 +151,12 @@ public final class MPDControl {
                 break;
             case R.id.shuffle:
                 run(ACTION_TOGGLE_RANDOM);
+                break;
+            case R.id.forward:
+                run(ACTION_FF);
+                break;
+            case R.id.rewind:
+                run(ACTION_REW);
                 break;
             case R.id.stop:
                 run(ACTION_STOP);
@@ -294,6 +303,34 @@ public final class MPDControl {
                             break;
                         case ACTION_NEXT:
                             mpd.next();
+                            break;
+                        case ACTION_FF:
+                            final long ffPos = mpd.getStatus().getElapsedTime() + 10;
+                            final long duration = (long)(mpd.getStatus().getDuration()/1000.);
+                            if (ffPos >= duration) {
+                                mpd.next();
+                            } else {
+                                mpd.seek(ffPos);
+                            }
+                            break;
+                        case ACTION_REW:
+                            final long rewPos = mpd.getStatus().getElapsedTime() - 10;
+                            if (rewPos >= 0) {
+                                mpd.seek(rewPos);
+                            } else {
+                                if (mpd.getStatus().getSongPos() > 1) {
+                                    mpd.previous();
+                                    try {
+                                        mpd.getStatus().update(); // have to do this _now_
+                                        final long prevduration = (long)(mpd.getStatus().getDuration()/1000.);
+                                        mpd.seek(prevduration - 20);
+                                    } catch (Exception e) {
+                                        Log.w(TAG, "Could not seek to end of previous track,");
+                                    }
+                                } else {
+                                    mpd.seek(0);
+                                }
+                            }
                             break;
                         case ACTION_PAUSE:
                             if (!mpd.getStatus().isState(MPDStatusMap.STATE_PAUSED)) {
