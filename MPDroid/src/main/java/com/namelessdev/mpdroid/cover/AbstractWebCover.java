@@ -16,6 +16,7 @@
 
 package com.namelessdev.mpdroid.cover;
 
+import com.namelessdev.mpdroid.helpers.AlbumInfo;
 import com.namelessdev.mpdroid.helpers.CoverManager;
 
 import org.apache.http.HttpEntity;
@@ -38,6 +39,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 @SuppressWarnings("resource")
 public abstract class AbstractWebCover implements ICoverRetriever {
@@ -45,6 +47,13 @@ public abstract class AbstractWebCover implements ICoverRetriever {
     private static final boolean DEBUG = CoverManager.DEBUG;
 
     private static final String TAG = "AbstractWebCover";
+
+    public abstract String[] getCoverUrl(final String artist, final String album) throws Exception;
+
+    public final String[] getCoverUrl(final AlbumInfo albumInfo) throws Exception {
+        return getCoverUrl(URLEncoder.encode(albumInfo.getArtistName(),"utf-8"),
+                    URLEncoder.encode(albumInfo.getAlbumName(),"utf-8"));
+    }
 
     private static String readInputStream(final InputStream content) {
         final InputStreamReader inputStreamReader = new InputStreamReader(content);

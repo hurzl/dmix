@@ -16,7 +16,6 @@
 
 package com.namelessdev.mpdroid.cover;
 
-import com.namelessdev.mpdroid.helpers.AlbumInfo;
 import com.namelessdev.mpdroid.helpers.CoverManager;
 
 import org.json.JSONArray;
@@ -86,7 +85,7 @@ public class SpotifyCover extends AbstractWebCover {
     }
 
     @Override
-    public String[] getCoverUrl(final AlbumInfo albumInfo) throws Exception {
+    public String[] getCoverUrl(final String artist, final String album) throws Exception {
 
         final String albumResponse;
         final List<String> albumIds;
@@ -95,7 +94,7 @@ public class SpotifyCover extends AbstractWebCover {
 
         try {
             albumResponse = executeGetRequest("http://ws.spotify.com/search/1/album.json?q="
-                    + albumInfo.getArtistName() + ' ' + albumInfo.getAlbumName());
+                    + artist + ' ' + album);
             albumIds = extractAlbumIds(albumResponse);
             for (final String albumId : albumIds) {
                 coverResponse = executeGetRequest(

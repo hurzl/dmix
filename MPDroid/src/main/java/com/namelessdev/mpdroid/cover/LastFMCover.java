@@ -16,7 +16,6 @@
 
 package com.namelessdev.mpdroid.cover;
 
-import com.namelessdev.mpdroid.helpers.AlbumInfo;
 import com.namelessdev.mpdroid.helpers.CoverManager;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -38,7 +37,7 @@ public class LastFMCover extends AbstractWebCover {
     private static final String sKey = "7fb78a81b20bee7cb6e8fad4cbcb3694";
 
     @Override
-    public String[] getCoverUrl(final AlbumInfo albumInfo) throws Exception {
+    public String[] getCoverUrl(final String artist, final String album) throws Exception {
 
         final String response;
         final String request;
@@ -49,8 +48,8 @@ public class LastFMCover extends AbstractWebCover {
         int eventType;
 
         try {
-            request = URL + "?method=album.getInfo&artist=" + albumInfo.getArtistName() + "&album="
-                    + albumInfo.getAlbumName() + "&api_key=" + sKey;
+            request = URL + "?method=album.getInfo&artist=" + artist + "&album="
+                    + album + "&api_key=" + sKey;
             response = executeGetRequest(request);
 
             factory = XmlPullParserFactory.newInstance();

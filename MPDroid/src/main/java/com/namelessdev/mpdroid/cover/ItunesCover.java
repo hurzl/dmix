@@ -16,7 +16,6 @@
 
 package com.namelessdev.mpdroid.cover;
 
-import com.namelessdev.mpdroid.helpers.AlbumInfo;
 import com.namelessdev.mpdroid.helpers.CoverManager;
 
 import org.json.JSONArray;
@@ -29,7 +28,7 @@ public class ItunesCover extends AbstractWebCover {
     private static final String TAG = "ItunesCover";
 
     @Override
-    public String[] getCoverUrl(final AlbumInfo albumInfo) throws Exception {
+    public String[] getCoverUrl(final String artist, final String album) throws Exception {
         final String response;
         final JSONObject jsonRootObject;
         final JSONArray jsonArray;
@@ -38,7 +37,7 @@ public class ItunesCover extends AbstractWebCover {
 
         try {
             response = executeGetRequest("https://itunes.apple.com/search?term="
-                    + albumInfo.getAlbumName() + ' ' + albumInfo.getArtistName()
+                    + album + ' ' + artist
                     + "&limit=5&media=music&entity=album");
             jsonRootObject = new JSONObject(response);
             jsonArray = jsonRootObject.getJSONArray("results");

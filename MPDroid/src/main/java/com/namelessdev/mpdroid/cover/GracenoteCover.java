@@ -17,7 +17,6 @@
 package com.namelessdev.mpdroid.cover;
 
 import com.namelessdev.mpdroid.MPDApplication;
-import com.namelessdev.mpdroid.helpers.AlbumInfo;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -134,7 +133,7 @@ public class GracenoteCover extends AbstractWebCover {
     }
 
     @Override
-    public String[] getCoverUrl(final AlbumInfo albumInfo) throws Exception {
+    public String[] getCoverUrl(final String artist, final String album) throws Exception {
         final String coverUrl;
 
         if (mUserId == null) {
@@ -145,7 +144,7 @@ public class GracenoteCover extends AbstractWebCover {
             return new String[0];
         }
         try {
-            coverUrl = getCoverUrl(albumInfo.getArtistName(), albumInfo.getAlbumName());
+            coverUrl = getCoverUrlStr(artist, album);
             if (coverUrl != null) {
                 return new String[]{
                         coverUrl
@@ -157,7 +156,7 @@ public class GracenoteCover extends AbstractWebCover {
         return new String[0];
     }
 
-    public String getCoverUrl(final String artist, final String album) {
+    public String getCoverUrlStr(final String artist, final String album) {
         // Make sure user doesn't try to register again if they already have a
         // userID in the ctor.
         // Do the register request

@@ -16,7 +16,6 @@
 
 package com.namelessdev.mpdroid.cover;
 
-import com.namelessdev.mpdroid.helpers.AlbumInfo;
 import com.namelessdev.mpdroid.helpers.CoverManager;
 
 import org.json.JSONArray;
@@ -92,7 +91,7 @@ public class DiscogsCover extends AbstractWebCover {
     }
 
     @Override
-    public String[] getCoverUrl(final AlbumInfo albumInfo) throws Exception {
+    public String[] getCoverUrl(final String artist, final String album) throws Exception {
 
         final String releaseIdResponse;
         final List<String> releaseIds;
@@ -101,7 +100,7 @@ public class DiscogsCover extends AbstractWebCover {
 
         releaseIdResponse = executeGetRequest(
                 "http://api.discogs.com/database/search?type=release&q="
-                        + albumInfo.getArtistName() + ' ' + albumInfo.getAlbumName()
+                        + artist + ' ' + album
                         + "& per_page = 10");
         releaseIds = extractReleaseIds(releaseIdResponse);
         for (final String releaseId : releaseIds) {

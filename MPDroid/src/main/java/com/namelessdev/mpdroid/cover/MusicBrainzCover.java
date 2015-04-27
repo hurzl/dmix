@@ -16,7 +16,6 @@
 
 package com.namelessdev.mpdroid.cover;
 
-import com.namelessdev.mpdroid.helpers.AlbumInfo;
 import com.namelessdev.mpdroid.helpers.CoverManager;
 
 import org.json.JSONArray;
@@ -117,13 +116,13 @@ public class MusicBrainzCover extends AbstractWebCover {
     }
 
     @Override
-    public String[] getCoverUrl(final AlbumInfo albumInfo) throws Exception {
+    public String[] getCoverUrl(final String artist, final String album) throws Exception {
 
         final List<String> releases;
         final List<String> coverUrls = new ArrayList<>();
         String covertArtResponse;
 
-        releases = searchForRelease(albumInfo);
+        releases = searchForRelease(artist, album);
         for (final String release : releases) {
             covertArtResponse = getCoverArtArchiveResponse(release);
             if (!covertArtResponse.isEmpty()) {
@@ -143,12 +142,12 @@ public class MusicBrainzCover extends AbstractWebCover {
         return "MUSICBRAINZ";
     }
 
-    private List<String> searchForRelease(final AlbumInfo albumInfo) {
+    private List<String> searchForRelease(String artist, String album) {
 
         final String response;
 
         final String url = "http://musicbrainz.org/ws/2/release-group/?query=" +
-                albumInfo.getArtistName() + ' ' + albumInfo.getAlbumName() +
+                artist + ' ' + album +
                 "&type=release-group&limit=5";
         response = executeGetRequestWithConnection(url);
         return extractReleaseIds(response);
