@@ -20,6 +20,7 @@ import com.anpmech.mpd.MPD;
 import com.anpmech.mpd.exception.MPDException;
 import com.anpmech.mpd.subsystem.status.MPDStatistics;
 import com.namelessdev.mpdroid.cover.CachedCover;
+import com.namelessdev.mpdroid.helpers.CachedMPD;
 import com.namelessdev.mpdroid.helpers.CoverManager;
 
 import android.app.Activity;
@@ -221,6 +222,14 @@ public class SettingsFragment extends PreferenceFragment {
             }
             return true;
 
+        } else if ("clearLocalAlbumCache".equals(preference.getKey())) {
+            try {
+                CachedMPD cMPD = (CachedMPD) mApp.oMPDAsyncHelper.oMPD;
+                cMPD.clearCache();
+            } catch (ClassCastException e) {
+                // not album-cached
+            }
+            return true;
         } else if ("pauseOnPhoneStateChange".equals(preference.getKey())) {
             /**
              * Allow these to be changed individually,

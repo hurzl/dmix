@@ -160,6 +160,11 @@
             android:summary="@string/useLocalAlbumCacheDescription"
             android:title="@string/useLocalAlbumCache" />
 
+        <PreferenceScreen
+            android:key="clearLocalAlbumCache"
+            android:summary="@string/clearLocalAlbumCacheDescription"
+            android:title="@string/clearLocalAlbumCache" />
+
         <ListPreference
             android:defaultValue="alphabet"
             android:entries="@array/setting_albumsort_array"
