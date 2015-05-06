@@ -160,12 +160,6 @@
             android:summary="@string/useLocalAlbumCacheDescription"
             android:title="@string/useLocalAlbumCache" />
 
-        <!-- CheckBoxPreference
-            android:defaultValue="false"
-            android:key="sortAlbumsByLastMod"
-            android:summary="@string/sortAlbumsByLastModDescription"
-            android:title="@string/sortAlbumsByLastMod" / -->
-
         <ListPreference
             android:defaultValue="alphabet"
             android:entries="@array/setting_albumsort_array"
