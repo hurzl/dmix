@@ -25,6 +25,8 @@ import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.text.TextUtils.isEmpty;
 
@@ -49,7 +51,10 @@ public class LocalCover implements ICoverRetriever {
     };
 
     // private final static String URL = "%s/%s/%s";
-    private static final String URL_PREFIX = "http://";
+    private static final String HTTP_PREFIX = "http://";
+
+    private static final Pattern URL_PROTO_PATTERN = Pattern.compile("^[a-zA-Z]*?://");
+
 
     private final MPDApplication mApp = MPDApplication.getInstance();
 
@@ -66,18 +71,21 @@ public class LocalCover implements ICoverRetriever {
 
     public static String buildCoverUrl(String serverName, String musicPath, final String path,
             final String fileName) {
-
-        if (musicPath.startsWith(URL_PREFIX)) {
-            int hostPortEnd = musicPath.indexOf(URL_PREFIX.length(), '/');
-            if (hostPortEnd == -1) {
-                hostPortEnd = musicPath.length();
-            }
-            serverName = musicPath.substring(URL_PREFIX.length(), hostPortEnd);
+        String prefix = HTTP_PREFIX;
+        Matcher matcher = URL_PROTO_PATTERN.matcher(musicPath);
+        if (matcher.find()) { // "http://", "https://", "ftp://" etc. was given
+            prefix = matcher.group();
+            int hostStart = matcher.end();
+            int hostPortEnd = musicPath.indexOf('/', hostStart);
+            serverName = musicPath.substring(hostStart, hostPortEnd);
             musicPath = musicPath.substring(hostPortEnd);
         }
-        final Uri.Builder uriBuilder = Uri.parse(URL_PREFIX + serverName).buildUpon();
+        final Uri.Builder uriBuilder = Uri.parse(prefix + serverName).buildUpon();
+
         appendPathString(uriBuilder, musicPath);
+
         appendPathString(uriBuilder, path);
+
         appendPathString(uriBuilder, fileName);
 
         final Uri uri = uriBuilder.build();
