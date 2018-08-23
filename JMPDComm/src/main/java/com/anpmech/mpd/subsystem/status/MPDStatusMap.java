@@ -379,9 +379,9 @@ public class MPDStatusMap extends ResponseMap implements MPDStatus {
     }
 
     /**
-     * Returns the current song duration in milliseconds.
+     * Returns the current song duration in seconds.
      *
-     * @return The current song duration in milliseconds.
+     * @return The current song duration in seconds.
      */
     @Override
     public final float getDuration() {

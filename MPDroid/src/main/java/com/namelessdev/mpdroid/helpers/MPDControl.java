@@ -176,7 +176,7 @@ public final class MPDControl {
                 break;
             case ACTION_FF:
                 final long ffPos = mpd.getStatus().getElapsedTime() + 10;
-                final long duration = (long) (mpd.getStatus().getDuration() / 1000.);
+                final long duration = (long) (mpd.getStatus().getDuration());
                 if (ffPos >= duration) {
                     future = playback.next();
                 } else {
@@ -192,8 +192,7 @@ public final class MPDControl {
                         future = playback.previous();
                         try {
                             mpd.getStatus().update(); // have to do this _now_
-                            final long prevduration = (long) (mpd.getStatus().getDuration()
-                                    / 1000.);
+                            final long prevduration = (long) (mpd.getStatus().getDuration());
                             future = playback.seek(prevduration - 20);
                         } catch (Exception e) {
                             Log.w(TAG, "Could not seek to end of previous track,");
