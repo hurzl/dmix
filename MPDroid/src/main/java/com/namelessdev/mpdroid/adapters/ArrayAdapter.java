@@ -125,7 +125,8 @@ public class ArrayAdapter<T extends Item<T>> extends android.widget.ArrayAdapter
         if (mDataBinder == null) {
             isEnabled = super.isEnabled(position);
         } else {
-            isEnabled = mDataBinder.isEnabled(position, mItems, getItem(position));
+            isEnabled = position < mItems.size() && mDataBinder
+                    .isEnabled(position, mItems, getItem(position));
         }
 
         return isEnabled;

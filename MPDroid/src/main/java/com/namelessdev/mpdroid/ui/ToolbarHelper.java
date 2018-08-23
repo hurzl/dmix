@@ -126,7 +126,7 @@ public class ToolbarHelper {
      * @param toolbar  The toolbar to show the back button on.
      */
     public static void showBackButton(final Activity activity, final Toolbar toolbar) {
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

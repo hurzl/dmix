@@ -61,8 +61,6 @@ import com.anpmech.mpd.subsystem.Sticker;
 import com.anpmech.mpd.subsystem.status.MPDStatisticsMap;
 import com.anpmech.mpd.subsystem.status.MPDStatusMap;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -953,7 +951,6 @@ public class MPD {
         return currentTrack;
     }
 
-    @Nullable
     protected Music getFirstTrack(final Album album) throws IOException, MPDException {
         final Artist artist = album.getArtist();
         final String[] args = new String[6];

@@ -31,6 +31,7 @@ apply plugin: 'com.android.library'
 
 repositories {
     mavenCentral()
+    google()
 }
 
 final def shortHash() {
@@ -38,12 +39,12 @@ final def shortHash() {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 23
+        targetSdkVersion 26
         versionCode Integer.parseInt("git rev-list HEAD --count".execute().text.trim())
         versionName shortHash()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -54,8 +55,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     sourceSets {
@@ -85,11 +86,10 @@ android {
             title = "$name Android WIP " + shortHash()
             description "Generates Javadoc for $variant.name."
             group "documentation"
-            source = variant.javaCompile.source
+            source = variant.javaCompileProvider
             ext.androidJar = "${android.sdkDirectory}" +
                     "/platforms/${android.compileSdkVersion}/android.jar"
-            classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
-
+            doFirst { classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar) }
             gradle.taskGraph.addTaskExecutionListener new BrowseJavadoc(
                     mTask: "${variant.name}Javadoc",
                     mIndexFile: file("${destinationDir}/index.html"))
@@ -112,13 +112,12 @@ android {
 }
 
 dependencies {
-    compile 'com.intellij:annotations:12.0'
-
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support.test:runner:0.4.1'
-
+    implementation 'com.android.support:support-annotations:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
     // For JUnit 4
-    androidTestCompile 'com.android.support.test:rules:0.4.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.0.0'
 }
 
 class BrowseJavadoc implements TaskExecutionListener {

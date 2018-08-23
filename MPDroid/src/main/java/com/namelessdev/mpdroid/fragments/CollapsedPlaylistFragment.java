@@ -29,6 +29,7 @@ import com.namelessdev.mpdroid.models.PlaylistSong;
 import com.namelessdev.mpdroid.models.PlaylistStream;
 import com.namelessdev.mpdroid.tools.Tools;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -210,7 +211,7 @@ public class CollapsedPlaylistFragment extends QueueFragment implements OnMenuIt
         }
     }
 
-    private static final String TAG = "com.namelessdev.mpdroid.CollapsedPlaylistFragment";
+    private static final String TAG = "...CollapsedPlaylistFragment";
 
     @Override
     public boolean onMenuItemClick(final MenuItem item) {
@@ -251,6 +252,7 @@ public class CollapsedPlaylistFragment extends QueueFragment implements OnMenuIt
         }
     }
 
+    @SuppressLint("LongLogTag")
     @Override
     public void scrollToNowPlaying() {
         final int songPos = getListPosition(mApp.getMPD().getStatus().getSongPos());
@@ -311,7 +313,7 @@ public class CollapsedPlaylistFragment extends QueueFragment implements OnMenuIt
         update(forcePlayingIDRefresh, -1);
     }
 
-    void update(final boolean forcePlayingIDRefresh, final int jumpTo) {
+    synchronized void update(final boolean forcePlayingIDRefresh, final int jumpTo) {
         collapsedAlbums = settings.getBoolean("collapseAlbums", false);
         // Save the scroll bar position to restore it after update
         final MPDPlaylist playlist = mApp.getMPD().getPlaylist();

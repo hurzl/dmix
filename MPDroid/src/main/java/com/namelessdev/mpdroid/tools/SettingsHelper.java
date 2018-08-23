@@ -21,13 +21,12 @@ import com.namelessdev.mpdroid.ConnectionInfo;
 import com.namelessdev.mpdroid.MPDApplication;
 import com.namelessdev.mpdroid.preferences.ConnectionModifier;
 
-import org.jetbrains.annotations.NotNull;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.regex.Pattern;
@@ -80,7 +79,7 @@ public final class SettingsHelper {
         return connectionInfo.build();
     }
 
-    @NotNull
+    @NonNull
     public static ConnectionInfo getConnectionSettings(final ConnectionInfo previousInfo) {
         final String wifiSSID = getCurrentSSID();
         final ConnectionInfo connectionInfo;

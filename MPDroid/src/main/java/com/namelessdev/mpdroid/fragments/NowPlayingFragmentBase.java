@@ -1009,17 +1009,17 @@ abstract class NowPlayingFragmentBase extends Fragment implements
 
         switch (itemId) {
             case POPUP_ALBUM:
-                intent.putExtra(Album.EXTRA, mCurrentSong.getAlbum());
+                intent.putExtra(Album.EXTRA, mCurrentSong.getAlbum().getName());
                 break;
             case POPUP_ALBUM_ARTIST:
-                intent.putExtra(Artist.EXTRA, mCurrentSong.getAlbumArtist());
+                intent.putExtra(Artist.EXTRA, mCurrentSong.getAlbumArtist().getName());
                 break;
             case POPUP_ARTIST:
-                intent.putExtra(Artist.EXTRA, mCurrentSong.getArtist());
+                intent.putExtra(Artist.EXTRA, mCurrentSong.getArtist().getName());
                 break;
             case POPUP_FOLDER:
                 final Directory directory = Directory.byPath(mCurrentSong.getParentDirectory());
-                intent.putExtra(Directory.EXTRA, directory);
+                intent.putExtra(Directory.EXTRA, directory.getFullPath());
                 break;
             default:
                 break;

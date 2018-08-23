@@ -275,7 +275,7 @@
     <string name="noSendActionReceiver">No activity found to handle action send.</string>
 
     <string name="actionSongSelected">1 song selected</string>
-    <string name="actionSongsSelected">%s songs selected</string>
+    <string name="actionSongsSelected">%d songs selected</string>
     <string name="searchQueue">Search play queue …</string>
     <string name="enableCoverOnlyOnWifi">Download via Wi-Fi only</string>
     <string name="enableCoverOnlyOnWifiDescription">Do not download cover art over mobile network. Reduces carrier charges</string>

@@ -25,12 +25,14 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.21.6'
+        classpath 'io.fabric.tools:gradle:1.28.0'
     }
 }
 
 repositories {
     mavenCentral()
+    jcenter()
+    google()
     maven { url 'https://maven.fabric.io/public' }
 }
 
@@ -39,12 +41,12 @@ def gitShortHash() {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 23
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 58
         versionName "1.08 Beta 4 " + gitShortHash()
     }
@@ -55,49 +57,48 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            shrinkResources true
         }
     }
 
+    flavorDimensions "version"
+
     productFlavors {
         all {
+            dimension "version"
             // Disable Crashlytics by default.
             ext.enableCrashlytics = false;
         }
-
         crashlytics {
+            dimension "version"
             versionName defaultConfig.versionName + "-c"
             ext.enableCrashlytics = true;
-
             dependencies {
-                compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+                implementation('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
                     transitive = true
                 }
             }
         }
-
         foss {
+            dimension "version"
             versionName defaultConfig.versionName + "-f"
-
             dependencies {
-                testCompile 'junit:junit:4.12'
-                testCompile "org.robolectric:robolectric:3.0"
+                testImplementation 'junit:junit:4.12'
+                testImplementation "org.robolectric:robolectric:3.0"
             }
         }
-
         leakCanary {
+            dimension "version"
             versionName defaultConfig.versionName + "-l"
-
             dependencies {
-                debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-                releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+                debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+                releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
             }
         }
     }
@@ -108,12 +109,13 @@ android {
             title = "$name $versionName"
             description "Generates Javadoc for $variant.name."
             group "documentation"
-            source = variant.javaCompile.source
+            source = variant.javaCompileProvider
             ext.androidJar =
                     "${android.sdkDirectory}" +
                             "/platforms/${android.compileSdkVersion}/android.jar"
-            classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
-
+            doFirst {
+                classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
+            }
             gradle.taskGraph.addTaskExecutionListener new BrowseJavadoc(
                     mTask: "${variant.name}Javadoc",
                     mIndexFile: file("${destinationDir}/index.html"))
@@ -142,15 +144,17 @@ android {
 
 dependencies {
     // Support Libraries
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:palette-v7:23.4.0'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:palette-v7:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
     // Projects
-    compile project(':JMPDCommAndroid')
+    implementation project(':JMPDCommAndroid')
     // Libraries from maven
-    compile 'asia.ivity.android:drag-sort-listview:1.0'
+    implementation 'asia.ivity.android:drag-sort-listview:1.0'
+    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.0.0'
+    implementation 'asia.ivity.android:drag-sort-listview-apklib:1.0'
 }
 
 class BrowseJavadoc implements TaskExecutionListener {

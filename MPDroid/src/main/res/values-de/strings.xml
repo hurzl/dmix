@@ -259,7 +259,7 @@
     <string name="resetCover">Bild zurücksetzen</string>
 
     <string name="actionSongSelected">1 Titel ausgewählt</string>
-    <string name="actionSongsSelected">%s Titel ausgewählt</string>
+    <string name="actionSongsSelected">%d Titel ausgewählt</string>
     <string name="searchQueue">Suche in Wiedergabeliste …</string>
     <string name="enableCoverOnlyOnWifi">Nur über Wi-Fi laden</string>
     <string name="enableCoverOnlyOnWifiDescription">Albencover nicht über Telefonnetzwerk laden. Kann Netzwerkkosten reduzieren</string>

@@ -25,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import java.util.Arrays;
 
@@ -108,7 +107,7 @@ public final class ConnectionInfo implements Parcelable {
      * @see Builder
      */
     private ConnectionInfo(@NotNull final String server, final int port, final String password,
-            @NonNull final Uri stream, final boolean isNotificationPersistent,
+            @NotNull final Uri stream, final boolean isNotificationPersistent,
             final ConnectionInfo lastConnection) {
         super();
 

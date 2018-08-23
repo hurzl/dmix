@@ -154,6 +154,7 @@ public class CachedMPD extends MPD {
         final List<Album> allAlbums;
         mCache.refresh();
         final Set<List<String>> albumListSet = mCache.getUniqueAlbumSet();
+        if (albumListSet == null) return new ArrayList<>();
         final Set<Album> albums = new HashSet<>(albumListSet.size());
         final AlbumBuilder albumBuilder = new AlbumBuilder();
 

@@ -247,7 +247,7 @@
     <string name="resetCover">Restablecer carátula</string>
 
     <string name="actionSongSelected">1 canción seleccionada</string>
-    <string name="actionSongsSelected">%s caciones seleccionadas</string>
+    <string name="actionSongsSelected">%d caciones seleccionadas</string>
     <string name="searchQueue">Buscar en la cola de reproducción…</string>
     <string name="enableCoverOnlyOnWifi">Descargar sólo vía Wi-Fi</string>
     <string name="enableCoverOnlyOnWifiDescription">No descargar carátulas sobre la red de datos móvil. Reduce los cargos del operador</string>

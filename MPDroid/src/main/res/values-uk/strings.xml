@@ -224,7 +224,7 @@
     <string name="resetCover">Скидання зображення</string>
 
     <string name="actionSongSelected">Обрано 1 пісню</string>
-    <string name="actionSongsSelected">Пісень обрано: %s</string>
+    <string name="actionSongsSelected">Пісень обрано: %d</string>
     <string name="searchQueue">Пошук черги відтворення…</string>
     <string name="enableCoverOnlyOnWifi">Завантажувати тільки через Wi-Fi</string>
     <string name="enableCoverOnlyOnWifiDescription">Не завантажувати обкладинки через мобільну мережу. Зменьшує витрати на послуги оператора</string>

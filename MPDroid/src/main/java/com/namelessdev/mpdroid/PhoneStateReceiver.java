@@ -59,7 +59,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
     public static final String PAUSE_DURING_CALL = "pauseOnPhoneStateChange";
 
     /** The debug flag, if set to true, debug output will emit in the logcat. */
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     /** A marker used when the app pauses / resumes playback */
     private static final String PAUSED_MARKER = "PausedMarker";
@@ -268,7 +268,7 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 
         @Override
         public void run() {
-            final MPDApplication app = (MPDApplication) mContext.getApplicationContext();
+            final MPDApplication app = MPDApplication.getInstance();
 
             try {
                 setMarker(PAUSING_MARKER);
