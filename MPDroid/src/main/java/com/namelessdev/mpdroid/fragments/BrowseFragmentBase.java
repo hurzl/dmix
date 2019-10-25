@@ -46,6 +46,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -565,7 +566,7 @@ abstract class BrowseFragmentBase<T extends Item<T>> extends Fragment implements
                 final Artist artist = getArtist(mItems.get((int) info.id));
 
                 if (artist != null) {
-                    intent.putExtra(Artist.EXTRA, artist);
+                    intent.putExtra(Artist.EXTRA, (Parcelable) artist);
                     startActivityForResult(intent, -1);
                 }
                 break;

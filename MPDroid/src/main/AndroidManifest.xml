@@ -14,8 +14,7 @@
   ~ limitations under the License.
   -->
 
-<manifest
-    package="com.namelessdev.mpdroid"
+<manifest package="com.namelessdev.mpdroid"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -33,6 +32,7 @@
     <application
         android:name="com.namelessdev.mpdroid.MPDApplication"
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
         android:fullBackupContent="true"
         android:fullBackupOnly="true"
         android:hardwareAccelerated="true"

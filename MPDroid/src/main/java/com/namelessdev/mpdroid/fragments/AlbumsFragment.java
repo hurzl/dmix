@@ -34,6 +34,7 @@ import com.namelessdev.mpdroid.views.holders.AlbumViewHolder;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -50,13 +51,15 @@ import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
 
 public class AlbumsFragment extends BrowseFragment<Album> {
 
     private static final String PREFERENCE_ALBUM_SORT = "sortAlbumsBy";
-    private static final String PREFERENCE_ALBUM_SORT_ALPH    = "alphabetically";
-    private static final String PREFERENCE_ALBUM_SORT_YEAR    = "albumyear";
+
+    private static final String PREFERENCE_ALBUM_SORT_ALPH = "alphabetically";
+
+    private static final String PREFERENCE_ALBUM_SORT_YEAR = "albumyear";
+
     private static final String PREFERENCE_ALBUM_SORT_LASTMOD = "lastmodified";
 
     private static final String ALBUM_LASTMOD_SORT_KEY = "sortAlbumsByLastMod";
@@ -112,9 +115,9 @@ public class AlbumsFragment extends BrowseFragment<Album> {
     protected void asyncUpdate() {
         final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mApp);
         final String sortBy = settings.getString(PREFERENCE_ALBUM_SORT,
-                                                 PREFERENCE_ALBUM_SORT_ALPH);
+                PREFERENCE_ALBUM_SORT_ALPH);
         boolean getDetails = true;
-        if (sortBy.equals(PREFERENCE_ALBUM_SORT_ALPH)) {
+        if (PREFERENCE_ALBUM_SORT_ALPH.equals(sortBy)) {
             getDetails = false;
         }
 
@@ -248,7 +251,7 @@ public class AlbumsFragment extends BrowseFragment<Album> {
         final Fragment fragment = Fragment.instantiate(activity, SongsFragment.class.getName(),
                 bundle);
 
-        bundle.putParcelable(Album.EXTRA, mItems.get(position));
+        bundle.putParcelable(Album.EXTRA, (Parcelable) mItems.get(position));
 
         // Terribly bugged
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -302,11 +305,11 @@ public class AlbumsFragment extends BrowseFragment<Album> {
     @Override
     public void onSaveInstanceState(final Bundle outState) {
         if (mArtist != null) {
-            outState.putParcelable(Artist.EXTRA, mArtist);
+            outState.putParcelable(Artist.EXTRA, (Parcelable) mArtist);
         }
 
         if (mGenre != null) {
-            outState.putParcelable(Genre.EXTRA, mGenre);
+            outState.putParcelable(Genre.EXTRA, (Parcelable) mGenre);
         }
         super.onSaveInstanceState(outState);
     }

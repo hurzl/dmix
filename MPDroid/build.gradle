@@ -57,8 +57,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility '1.8'
+        targetCompatibility '1.8'
     }
 
     buildTypes {
@@ -75,16 +75,6 @@ android {
             // Disable Crashlytics by default.
             ext.enableCrashlytics = false;
         }
-        crashlytics {
-            dimension "version"
-            versionName defaultConfig.versionName + "-c"
-            ext.enableCrashlytics = true;
-            dependencies {
-                implementation('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
-                    transitive = true
-                }
-            }
-        }
         foss {
             dimension "version"
             versionName defaultConfig.versionName + "-f"
@@ -92,14 +82,7 @@ android {
                 testImplementation 'junit:junit:4.12'
                 testImplementation "org.robolectric:robolectric:3.0"
             }
-        }
-        leakCanary {
-            dimension "version"
-            versionName defaultConfig.versionName + "-l"
-            dependencies {
-                debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
-                releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
-            }
+            ext.enableCrashlytics = false;
         }
     }
 
