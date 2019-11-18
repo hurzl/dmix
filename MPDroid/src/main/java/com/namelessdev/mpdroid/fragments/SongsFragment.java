@@ -43,6 +43,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
@@ -421,7 +422,7 @@ public class SongsFragment extends BrowseFragment<Music> implements
                 final int itemId = item.getItemId();
                 if (itemId == GOTO_ARTIST) {
                     final Intent intent = new Intent(getActivity(), SimpleLibraryActivity.class);
-                    intent.putExtra(Artist.EXTRA, mAlbum.getArtist());
+                    intent.putExtra(Artist.EXTRA, (Parcelable) mAlbum.getArtist());
                     startActivityForResult(intent, -1);
                 } else {
                     mApp.getAsyncHelper().execAsync(new Runnable() {
@@ -593,7 +594,7 @@ public class SongsFragment extends BrowseFragment<Music> implements
 
     @Override
     public void onSaveInstanceState(final Bundle outState) {
-        outState.putParcelable(Album.EXTRA, mAlbum);
+        outState.putParcelable(Album.EXTRA, (Parcelable) mAlbum);
         outState.putBoolean(STATE_FIRST_REFRESH, mFirstRefresh);
         outState.putString(STATE_VIEW_TRANSITION_NAME, mViewTransitionName);
         super.onSaveInstanceState(outState);

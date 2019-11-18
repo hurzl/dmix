@@ -25,6 +25,7 @@ import com.namelessdev.mpdroid.library.ILibraryFragmentActivity;
 import com.namelessdev.mpdroid.tools.Tools;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -101,7 +102,7 @@ public class GenresFragment extends BrowseFragment<Genre> {
         final Fragment fragment =
                 Fragment.instantiate(getActivity(), ArtistsFragment.class.getName(), bundle);
 
-        bundle.putParcelable(Genre.EXTRA, mItems.get(position));
+        bundle.putParcelable(Genre.EXTRA, (Parcelable) mItems.get(position));
 
         ((ILibraryFragmentActivity) getActivity()).pushLibraryFragment(fragment, Artist.EXTRA);
     }

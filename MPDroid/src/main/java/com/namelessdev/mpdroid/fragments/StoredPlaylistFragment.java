@@ -28,6 +28,7 @@ import com.namelessdev.mpdroid.views.StoredPlaylistDataBinder;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.StringRes;
 import android.util.Log;
 import android.view.Menu;
@@ -168,7 +169,7 @@ public class StoredPlaylistFragment extends BrowseFragment<Music> {
         switch (item.getItemId()) {
             case R.id.PLM_EditPL:
                 intent = new Intent(getActivity(), PlaylistEditActivity.class);
-                intent.putExtra(PlaylistFile.EXTRA, mPlaylist);
+                intent.putExtra(PlaylistFile.EXTRA, (Parcelable) mPlaylist);
                 startActivity(intent);
                 return true;
             default:
@@ -186,7 +187,7 @@ public class StoredPlaylistFragment extends BrowseFragment<Music> {
 
     @Override
     public void onSaveInstanceState(final Bundle outState) {
-        outState.putParcelable(PlaylistFile.EXTRA, mPlaylist);
+        outState.putParcelable(PlaylistFile.EXTRA, (Parcelable) mPlaylist);
         super.onSaveInstanceState(outState);
     }
 

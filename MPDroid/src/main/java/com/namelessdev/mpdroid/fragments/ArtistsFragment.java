@@ -30,6 +30,7 @@ import com.namelessdev.mpdroid.tools.Tools;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -194,8 +195,8 @@ public class ArtistsFragment extends BrowseFragment<Artist> {
         final Bundle bundle = new Bundle(2);
         final Fragment fragment;
 
-        bundle.putParcelable(Artist.EXTRA, mItems.get(position));
-        bundle.putParcelable(Genre.EXTRA, mGenre);
+        bundle.putParcelable(Artist.EXTRA, (Parcelable) mItems.get(position));
+        bundle.putParcelable(Genre.EXTRA, (Parcelable) mGenre);
 
         if (settings.getBoolean(PREFERENCE_ALBUM_LIBRARY, true)) {
             fragment = Fragment.instantiate(activity, AlbumsGridFragment.class.getName(), bundle);
@@ -209,7 +210,7 @@ public class ArtistsFragment extends BrowseFragment<Artist> {
     @Override
     public void onSaveInstanceState(final Bundle outState) {
         if (mGenre != null) {
-            outState.putParcelable(Genre.EXTRA, mGenre);
+            outState.putParcelable(Genre.EXTRA, (Parcelable) mGenre);
         }
         super.onSaveInstanceState(outState);
     }

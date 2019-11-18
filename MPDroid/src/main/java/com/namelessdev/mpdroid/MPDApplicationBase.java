@@ -93,8 +93,9 @@ class MPDApplicationBase extends Application implements
      */
     static {
         final StrictMode.ThreadPolicy policy =
-                new StrictMode.ThreadPolicy.Builder().detectAll().build();
-        StrictMode.setThreadPolicy(policy);
+                new StrictMode.ThreadPolicy.Builder().detectAll()
+                        .penaltyLog().build();
+//        StrictMode.setThreadPolicy(policy);
     }
 
     /**

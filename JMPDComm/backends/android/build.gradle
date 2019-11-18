@@ -117,7 +117,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     // For JUnit 4
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
-    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.0.0'
+    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.02.0'
 }
 
 class BrowseJavadoc implements TaskExecutionListener {

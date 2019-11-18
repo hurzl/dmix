@@ -39,7 +39,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -462,7 +461,7 @@ public class SearchActivity extends MPDActivity implements OnMenuItemClickListen
                     final Intent intent = new Intent(this, SimpleLibraryActivity.class);
                     final Parcelable artist = Artist.byName(music.getAlbumArtistOrArtist());
                     intent.putExtra(Artist.EXTRA, artist);
-                    intent.putExtra(Album.EXTRA, music.getAlbum());
+                    intent.putExtra(Album.EXTRA, (Parcelable) music.getAlbum());
                     startActivityForResult(intent, -1);
                 }
             } else {

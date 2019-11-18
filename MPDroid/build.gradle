@@ -136,7 +136,7 @@ dependencies {
     implementation project(':JMPDCommAndroid')
     // Libraries from maven
     implementation 'asia.ivity.android:drag-sort-listview:1.0'
-    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.0.0'
+    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.02.0'
     implementation 'asia.ivity.android:drag-sort-listview-apklib:1.0'
 }
 

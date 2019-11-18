@@ -48,6 +48,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.AttrRes;
 import android.support.annotation.IdRes;
@@ -1009,13 +1010,13 @@ abstract class NowPlayingFragmentBase extends Fragment implements
 
         switch (itemId) {
             case POPUP_ALBUM:
-                intent.putExtra(Album.EXTRA, mCurrentSong.getAlbum().getName());
+                intent.putExtra(Album.EXTRA, (Parcelable) mCurrentSong.getAlbum());
                 break;
             case POPUP_ALBUM_ARTIST:
-                intent.putExtra(Artist.EXTRA, mCurrentSong.getAlbumArtist().getName());
+                intent.putExtra(Artist.EXTRA, (Parcelable) mCurrentSong.getAlbumArtist());
                 break;
             case POPUP_ARTIST:
-                intent.putExtra(Artist.EXTRA, mCurrentSong.getArtist().getName());
+                intent.putExtra(Artist.EXTRA, (Parcelable) mCurrentSong.getArtist());
                 break;
             case POPUP_FOLDER:
                 final Directory directory = Directory.byPath(mCurrentSong.getParentDirectory());

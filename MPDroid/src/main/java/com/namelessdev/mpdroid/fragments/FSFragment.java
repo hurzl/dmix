@@ -33,6 +33,7 @@ import com.namelessdev.mpdroid.tools.Tools;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -210,7 +211,7 @@ public class FSFragment extends BrowseFragment {
             final Fragment fragment =
                     Fragment.instantiate(activity, FSFragment.class.getName(), bundle);
 
-            bundle.putParcelable(Directory.EXTRA, Directory.byPath(path));
+            bundle.putParcelable(Directory.EXTRA, (Parcelable) Directory.byPath(path));
             bundle.putBoolean(EXTRA_USE_BACK_STACK, useBackStack);
 
             ((ILibraryFragmentActivity) activity)
@@ -323,7 +324,7 @@ public class FSFragment extends BrowseFragment {
 
     @Override
     public void onSaveInstanceState(final Bundle outState) {
-        outState.putParcelable(Directory.EXTRA, mDirectory);
+        outState.putParcelable(Directory.EXTRA, (Parcelable) mDirectory);
         outState.putInt(SUBDIRECTORY_COUNT, mNumSubDirs);
         outState.putBoolean(EXTRA_USE_BACK_STACK, mUseBackStack);
         super.onSaveInstanceState(outState);

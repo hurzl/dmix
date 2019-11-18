@@ -42,7 +42,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="Gradle: annotations-12.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: org.jetbrains.annotations-1.0.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.jetbrains.annotations-1.02.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="Gradle: junit-4.12" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="Gradle: hamcrest-core-1.3" level="project" />
   </component>
