@@ -610,7 +610,7 @@ abstract class QueueFragmentBase extends ListFragment implements StatusChangeLis
         String artistName = track.getAlbumArtistName();
 
         if (artistName == null || artistName.isEmpty()) {
-            artistName = track.getAlbumArtistName();
+            artistName = track.getArtistName();
         }
 
         if (albumName == null && artistName == null) {

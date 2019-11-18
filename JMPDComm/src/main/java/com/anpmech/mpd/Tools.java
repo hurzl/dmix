@@ -416,13 +416,13 @@ public final class Tools {
      * @see #sequentialToRange(int...)
      */
     public static List<CharSequence> sequentialToRange(final List<Integer> integers) {
-        final ListIterator<Integer> iterator = integers.listIterator(integers.size());
         final List<CharSequence> ranges = new ArrayList<>();
         final StringBuilder stringBuilder = new StringBuilder(10);
         boolean inSequenceRange = false;
         int startRange = -1;
 
         Collections.sort(integers);
+        final ListIterator<Integer> iterator = integers.listIterator(integers.size());
 
         while (iterator.hasPrevious()) {
             final Integer integer = iterator.previous();
