@@ -23,8 +23,8 @@ import com.anpmech.mpd.subsystem.Playback;
 import com.namelessdev.mpdroid.MPDApplication;
 import com.namelessdev.mpdroid.R;
 
-import android.support.annotation.IdRes;
-import android.support.annotation.StringDef;
+import androidx.annotation.IdRes;
+import androidx.annotation.StringDef;
 import android.util.Log;
 
 import java.lang.annotation.Retention;

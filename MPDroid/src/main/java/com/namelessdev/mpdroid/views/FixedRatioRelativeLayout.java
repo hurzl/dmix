@@ -20,8 +20,8 @@ import com.namelessdev.mpdroid.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.AttrRes;
-import android.support.annotation.StyleRes;
+import androidx.annotation.AttrRes;
+import androidx.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 

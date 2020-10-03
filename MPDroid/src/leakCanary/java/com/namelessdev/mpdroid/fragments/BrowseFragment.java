@@ -19,7 +19,7 @@ package com.namelessdev.mpdroid.fragments;
 import com.anpmech.mpd.item.Item;
 import com.namelessdev.mpdroid.MPDApplication;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 public abstract class BrowseFragment<T extends Item<T>> extends BrowseFragmentBase<T> {
 

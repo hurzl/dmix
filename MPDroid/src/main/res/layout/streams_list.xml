@@ -77,7 +77,7 @@
         </ScrollView>
 
         <!-- Shitty padding workaround for the collapsible actionbar issue -->
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/streamAddButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

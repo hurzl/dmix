@@ -22,12 +22,13 @@ import com.anpmech.mpd.exception.MPDException;
 import com.anpmech.mpd.item.Music;
 import com.namelessdev.mpdroid.MPDApplication;
 
-import android.support.annotation.IntDef;
 import android.util.Log;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.IntDef;
 
 /**
  * Playlist control implements simple playlist controls which require no result processing.
@@ -88,14 +89,10 @@ public final class QueueControl {
         APP.getAsyncHelper().execAsync(new Runnable() {
             @Override
             public void run() {
-                try {
-                    if (command != REMOVE_BY_ID) {
-                        argumentNotSupported(command);
-                    }
-                    PLAYLIST.removeById(intArray);
-                } catch (final IOException | MPDException e) {
-                    Log.e(TAG, "Failed to remove by playlist id. intArray: " + intArray, e);
+                if (command != REMOVE_BY_ID) {
+                    argumentNotSupported(command);
                 }
+                PLAYLIST.removeById(intArray);
             }
         });
     }
@@ -111,14 +108,10 @@ public final class QueueControl {
         APP.getAsyncHelper().execAsync(new Runnable() {
             @Override
             public void run() {
-                try {
-                    if (command != SAVE_PLAYLIST) {
-                        argumentNotSupported(command);
-                    }
-                    PLAYLIST.savePlaylist(s);
-                } catch (final IOException | MPDException e) {
-                    Log.e(TAG, "Failed to save the playlist. String: " + s, e);
+                if (command != SAVE_PLAYLIST) {
+                    argumentNotSupported(command);
                 }
+                PLAYLIST.savePlaylist(s);
             }
         });
     }
@@ -173,47 +166,42 @@ public final class QueueControl {
                 int workingCommand = command;
                 int j = arg2;
 
-                try {
-                    switch (command) {
-                        case MOVE_TO_LAST:
-                            j = MPD.getStatus().getPlaylistLength() - 1;
-                            workingCommand = MOVE;
-                            break;
-                        case MOVE_TO_NEXT:
-                            j = MPD.getStatus().getSongPos();
+                switch (command) {
+                    case MOVE_TO_LAST:
+                        j = MPD.getStatus().getPlaylistLength() - 1;
+                        workingCommand = MOVE;
+                        break;
+                    case MOVE_TO_NEXT:
+                        j = MPD.getStatus().getSongPos();
 
-                            if (arg1 >= j) {
-                                j += 1;
-                            }
+                        if (arg1 >= j) {
+                            j += 1;
+                        }
 
-                            workingCommand = MOVE;
-                            break;
-                        default:
-                            break;
-                    }
+                        workingCommand = MOVE;
+                        break;
+                    default:
+                        break;
+                }
 
-                    switch (workingCommand) {
-                        case CLEAR:
-                            PLAYLIST.clear();
-                            break;
-                        case MOVE:
-                            PLAYLIST.move(arg1, j);
-                            break;
-                        case REMOVE_ALBUM_BY_ID:
-                            PLAYLIST.removeAlbumById(arg1);
-                            break;
-                        case REMOVE_BY_ID:
-                            PLAYLIST.removeById(arg1);
-                            break;
-                        case SHUFFLE:
-                            PLAYLIST.shuffle();
-                            break;
-                        default:
-                            argumentNotSupported(command);
-                    }
-                } catch (final IOException | MPDException e) {
-                    Log.e(TAG, "Failed to run simple playlist command. Argument 1: " + arg1 +
-                            " Argument 2: " + arg2, e);
+                switch (workingCommand) {
+                    case CLEAR:
+                        PLAYLIST.clear();
+                        break;
+                    case MOVE:
+                        PLAYLIST.move(arg1, j);
+                        break;
+                    case REMOVE_ALBUM_BY_ID:
+                        PLAYLIST.removeAlbumById(arg1);
+                        break;
+                    case REMOVE_BY_ID:
+                        PLAYLIST.removeById(arg1);
+                        break;
+                    case SHUFFLE:
+                        PLAYLIST.shuffle();
+                        break;
+                    default:
+                        argumentNotSupported(command);
                 }
             }
         }).start();
@@ -232,15 +220,10 @@ public final class QueueControl {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    if (command != MOVE) {
-                        argumentNotSupported(command);
-                    }
-                    PLAYLIST.moveByPosition(arg1, arg2, arg3);
-                } catch (final IOException | MPDException e) {
-                    Log.e(TAG, "Failed to run simple playlist command. Argument 1: " + arg1
-                            + " Argument 2: " + arg2 + " Argument 3: " + arg3, e);
+                if (command != MOVE) {
+                    argumentNotSupported(command);
                 }
+                PLAYLIST.moveByPosition(arg1, arg2, arg3);
             }
         }).start();
     }

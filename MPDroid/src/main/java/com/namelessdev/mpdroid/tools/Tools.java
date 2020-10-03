@@ -28,7 +28,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;

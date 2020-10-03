@@ -29,7 +29,6 @@ import com.namelessdev.mpdroid.views.StoredPlaylistDataBinder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.StringRes;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +38,8 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 
 import java.io.IOException;
+
+import androidx.annotation.StringRes;
 
 public class StoredPlaylistFragment extends BrowseFragment<Music> {
 
@@ -53,24 +54,16 @@ public class StoredPlaylistFragment extends BrowseFragment<Music> {
 
     @Override
     protected void add(final Music item, final boolean replace, final boolean play) {
-        try {
-            mApp.getMPD().add(item, replace, play);
-            if (!play) {
-                Tools.notifyUser(R.string.songAdded, item.getTitle(), item.getName());
-            }
-        } catch (final IOException | MPDException e) {
-            Log.e(TAG, "Failed to add.", e);
+        mApp.getMPD().add(item, replace, play);
+        if (!play) {
+            Tools.notifyUser(R.string.songAdded, item.getTitle(), item.getName());
         }
     }
 
     @Override
     protected void add(final Music item, final PlaylistFile playlist) {
-        try {
-            mApp.getMPD().addToPlaylist(playlist, item);
-            Tools.notifyUser(mIrAdded, item);
-        } catch (final IOException | MPDException e) {
-            Log.e(TAG, "Failed to add.", e);
-        }
+        mApp.getMPD().addToPlaylist(playlist, item);
+        Tools.notifyUser(mIrAdded, item);
     }
 
     @Override

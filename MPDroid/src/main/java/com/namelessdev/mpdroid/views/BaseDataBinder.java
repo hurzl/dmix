@@ -31,8 +31,8 @@ import com.namelessdev.mpdroid.views.holders.AlbumCoverHolder;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import android.view.View;
 
 import java.util.List;

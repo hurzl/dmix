@@ -124,7 +124,7 @@ public class MPDPlaylist {
     static CommandQueue cropCommand(final MPD mpd) {
         final CommandQueue commandQueue = new CommandQueue();
         final int currentTrackID = mpd.getStatus().getSongId();
-        /** Null range ends are broken in MPD-0.18 on 32-bit arch, see bug #4080. */
+        /* Null range ends are broken in MPD-0.18 on 32-bit arch, see bug #4080. */
         final int playlistLength = mpd.getStatus().getPlaylistLength();
 
         if (currentTrackID < 0) {
@@ -155,44 +155,36 @@ public class MPDPlaylist {
      * Adds a music to playlist.
      *
      * @param entry music/directory/playlist to be added.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void add(final FilesystemTreeEntry entry) throws IOException, MPDException {
-        mConnection.send(addCommand(entry.getFullPath()));
+    public void add(final FilesystemTreeEntry entry) {
+        mConnection.submit(addCommand(entry.getFullPath()));
     }
 
     /**
      * Adds a {@code collection} of {@code Music} to playlist.
      *
      * @param collection {@code collection} of {@code Music} to be added to playlist.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      * @see Music
      */
-    public void addAll(final Iterable<Music> collection) throws IOException, MPDException {
-        mConnection.send(addAllCommand(collection));
+    public void addAll(final Iterable<Music> collection) {
+        mConnection.submit(addAllCommand(collection));
     }
 
     /**
      * Adds a stream to playlist.
      *
      * @param url stream URL
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void addStream(final String url) throws IOException, MPDException {
-        mConnection.send(MPD_CMD_PLAYLIST_ADD, url);
+    public void addStream(final String url) {
+        mConnection.submit(MPD_CMD_PLAYLIST_ADD, url);
     }
 
     /**
      * Clears playlist content.
      *
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void clear() throws IOException, MPDException {
-        mConnection.send(clearCommand());
+    public void clear() {
+        mConnection.submit(clearCommand());
     }
 
     /**
@@ -269,11 +261,9 @@ public class MPDPlaylist {
      * Load playlist file.
      *
      * @param file playlist filename without .m3u extension.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void load(final String file) throws IOException, MPDException {
-        mConnection.send(loadCommand(file));
+    public void load(final String file) {
+        mConnection.submit(loadCommand(file));
     }
 
     /**
@@ -281,11 +271,9 @@ public class MPDPlaylist {
      *
      * @param songId Id of the song to be moved.
      * @param to     target position of the song to be moved.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void move(final int songId, final int to) throws IOException, MPDException {
-        mConnection.send(MPD_CMD_PLAYLIST_MOVE_ID, Integer.toString(songId),
+    public void move(final int songId, final int to) {
+        mConnection.submit(MPD_CMD_PLAYLIST_MOVE_ID, Integer.toString(songId),
                 Integer.toString(to));
     }
 
@@ -294,12 +282,10 @@ public class MPDPlaylist {
      *
      * @param from current position of the song to be moved.
      * @param to   target position of the song to be moved.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      * @see #move(int, int)
      */
-    public void moveByPosition(final int from, final int to) throws IOException, MPDException {
-        mConnection.send(MPD_CMD_PLAYLIST_MOVE, Integer.toString(from),
+    public void moveByPosition(final int from, final int to) {
+        mConnection.submit(MPD_CMD_PLAYLIST_MOVE, Integer.toString(from),
                 Integer.toString(to));
     }
 
@@ -309,18 +295,15 @@ public class MPDPlaylist {
      * @param start  current position of the first of the songs to be moved.
      * @param number number of songs to be moved.
      * @param to     first target position of the songs to be moved to.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      * @see #moveByPosition(int, int)
      */
-    public void moveByPosition(final int start, final int number, final int to)
-            throws IOException, MPDException {
+    public void moveByPosition(final int start, final int number, final int to) {
         if (start != to && number > 0) {
             final String beginRange = Integer.toString(start);
             final String endRange = Integer.toString(start + number);
             final String target = Integer.toString(to);
             mConnection
-                    .send(MPD_CMD_PLAYLIST_MOVE, beginRange + ':' + endRange, target);
+                    .submit(MPD_CMD_PLAYLIST_MOVE, beginRange + ':' + endRange, target);
         }
     }
 
@@ -329,11 +312,9 @@ public class MPDPlaylist {
      * method.
      *
      * @param songId entries positions.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      * @see #removeById(int[])
      */
-    public void removeAlbumById(final int songId) throws IOException, MPDException {
+    public void removeAlbumById(final int songId) {
         final List<Integer> matchingPositions = new ArrayList<>();
         final Music currentTrack = mList.getById(songId);
         final String albumName = currentTrack.getAlbumName();
@@ -356,7 +337,7 @@ public class MPDPlaylist {
             Log.debug(TAG, "Remove album " + albumName + " of " + artistName);
         }
 
-        /** Don't allow the list to change before we've computed the CommandList. */
+        /* Don't allow the list to change before we've computed the CommandList. */
         synchronized (mList) {
             for (final Music track : mList) {
                 if (Tools.equals(albumName, track.getAlbumName())) {
@@ -382,43 +363,37 @@ public class MPDPlaylist {
      * Removes entries from playlist.
      *
      * @param songIds entries IDs.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void removeById(final int... songIds) throws IOException, MPDException {
+    public void removeById(final int... songIds) {
         final CommandQueue commandQueue = new CommandQueue(songIds.length);
 
         for (final int id : songIds) {
             commandQueue.add(MPD_CMD_PLAYLIST_REMOVE_ID, Integer.toString(id));
         }
-        mConnection.send(commandQueue);
+        mConnection.submit(commandQueue);
     }
 
     /**
      * Removes entries from playlist.
      *
      * @param songIds Playlist songIDs to remove.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void removeById(final Collection<Integer> songIds) throws IOException, MPDException {
+    public void removeById(final Collection<Integer> songIds) {
         final CommandQueue commandQueue = new CommandQueue(songIds.size());
 
         for (final Integer id : songIds) {
             commandQueue.add(MPD_CMD_PLAYLIST_REMOVE_ID, id.toString());
         }
 
-        mConnection.send(commandQueue);
+        mConnection.submit(commandQueue);
     }
 
     /**
      * Removes entries from playlist.
      *
      * @param songs entries positions.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    void removeByIndex(final int... songs) throws IOException, MPDException {
+    void removeByIndex(final int... songs) {
         final CommandQueue commandQueue = new CommandQueue();
         if (mConnection.isProtocolVersionSupported(0, 16)) {
             commandQueue.add(MPD_CMD_PLAYLIST_REMOVE, Tools.sequentialToRange(songs));
@@ -429,17 +404,15 @@ public class MPDPlaylist {
                 commandQueue.add(MPD_CMD_PLAYLIST_REMOVE, Integer.toString(i));
             }
         }
-        mConnection.send(commandQueue);
+        mConnection.submit(commandQueue);
     }
 
     /**
      * Removes entries from playlist.
      *
      * @param songs entries positions.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    void removeByIndex(final List<Integer> songs) throws IOException, MPDException {
+    void removeByIndex(final List<Integer> songs) {
         final CommandQueue commandQueue = new CommandQueue();
 
         if (mConnection.isProtocolVersionSupported(0, 16)) {
@@ -451,45 +424,34 @@ public class MPDPlaylist {
             }
         }
 
-        mConnection.send(commandQueue);
+        mConnection.submit(commandQueue);
     }
 
     /**
      * Removes playlist file.
      *
      * @param file playlist filename without .m3u extension.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void removePlaylist(final String file) throws IOException, MPDException {
-        mConnection.send(MPD_CMD_PLAYLIST_DELETE, file);
+    public void removePlaylist(final String file) {
+        mConnection.submit(MPD_CMD_PLAYLIST_DELETE, file);
     }
 
     /**
      * Save playlist file.
      *
      * @param file playlist filename without .m3u extension.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void savePlaylist(final String file) throws IOException, MPDException {
+    public void savePlaylist(final String file) {
         // If the playlist already exists, save will fail. So, just remove it first!
-        try {
-            removePlaylist(file);
-        } catch (final MPDException ignored) {
-            /** We're removing it just in case it exists. */
-        }
-        mConnection.send(MPD_CMD_PLAYLIST_SAVE, file);
+        removePlaylist(file);
+        mConnection.submit(MPD_CMD_PLAYLIST_SAVE, file);
     }
 
     /**
      * Shuffles playlist content.
-     *
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void shuffle() throws IOException, MPDException {
-        mConnection.send(MPD_CMD_PLAYLIST_SHUFFLE);
+    public void shuffle() {
+        mConnection.submit(MPD_CMD_PLAYLIST_SHUFFLE);
     }
 
     /**
@@ -507,11 +469,9 @@ public class MPDPlaylist {
      *
      * @param song1Id id of song1 in playlist.
      * @param song2Id id of song2 in playlist.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void swap(final int song1Id, final int song2Id) throws IOException, MPDException {
-        mConnection.send(MPD_CMD_PLAYLIST_SWAP_ID,
+    public void swap(final int song1Id, final int song2Id) {
+        mConnection.submit(MPD_CMD_PLAYLIST_SWAP_ID,
                 Integer.toString(song1Id), Integer.toString(song2Id));
     }
 
@@ -520,12 +480,10 @@ public class MPDPlaylist {
      *
      * @param song1 position of song1 in playlist.
      * @param song2 position of song2 in playlist
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      * @see #swap(int, int)
      */
-    public void swapByPosition(final int song1, final int song2) throws IOException, MPDException {
-        mConnection.send(MPD_CMD_PLAYLIST_SWAP, Integer.toString(song1),
+    public void swapByPosition(final int song1, final int song2) {
+        mConnection.submit(MPD_CMD_PLAYLIST_SWAP, Integer.toString(song1),
                 Integer.toString(song2));
     }
 

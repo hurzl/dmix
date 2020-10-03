@@ -16,6 +16,8 @@
 
 package com.namelessdev.mpdroid.fragments;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import com.anpmech.mpd.MPD;
 import com.anpmech.mpd.exception.MPDException;
 import com.anpmech.mpd.item.Album;
@@ -44,12 +46,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.support.annotation.StringRes;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.PopupMenuCompat;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -71,6 +67,12 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+
+import androidx.annotation.StringRes;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.PopupMenuCompat;
+import androidx.palette.graphics.Palette;
 
 public class SongsFragment extends BrowseFragment<Music> implements
         ViewTreeObserver.OnPreDrawListener {
@@ -125,22 +127,14 @@ public class SongsFragment extends BrowseFragment<Music> implements
 
     @Override
     protected void add(final Music item, final boolean replace, final boolean play) {
-        try {
-            mApp.getMPD().add(item, replace, play);
-            Tools.notifyUser(R.string.songAdded, item.getTitle(), item.getName());
-        } catch (final IOException | MPDException e) {
-            Log.e(TAG, "Failed to add, remove, play.", e);
-        }
+        mApp.getMPD().add(item, replace, play);
+        Tools.notifyUser(R.string.songAdded, item.getTitle(), item.getName());
     }
 
     @Override
     protected void add(final Music item, final PlaylistFile playlist) {
-        try {
-            mApp.getMPD().addToPlaylist(playlist, item);
-            Tools.notifyUser(mIrAdded, item);
-        } catch (final IOException | MPDException e) {
-            Log.e(TAG, "Failed to add to playlist.", e);
-        }
+        mApp.getMPD().addToPlaylist(playlist, item);
+        Tools.notifyUser(mIrAdded, item);
     }
 
     private void applyPaletteWithBitmapAsync(final Bitmap bitmap) {

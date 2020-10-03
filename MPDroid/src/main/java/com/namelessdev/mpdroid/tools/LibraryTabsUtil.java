@@ -21,7 +21,7 @@ import com.namelessdev.mpdroid.R;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import java.util.ArrayList;
 import java.util.Arrays;

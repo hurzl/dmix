@@ -76,11 +76,7 @@ public class PlaylistEditActivity extends MPDActivity implements StatusChangeLis
             final AbstractMap<String, Object> itemFrom = mSongList.get(from);
             final Integer songID = (Integer) itemFrom.get(Music.RESPONSE_SONG_ID);
             if (mIsPlayQueue) {
-                try {
-                    mMPD.getPlaylist().move(songID, to);
-                } catch (final IOException | MPDException e) {
-                    Log.e(TAG, "Failed to move a track on the queue.", e);
-                }
+                mMPD.getPlaylist().move(songID, to);
             } else {
                 try {
                     mMPD.movePlaylistSong(mPlaylist, from, to);
@@ -130,14 +126,10 @@ public class PlaylistEditActivity extends MPDActivity implements StatusChangeLis
                 }
             }
 
-            try {
-                if (mIsPlayQueue) {
-                    mMPD.getPlaylist().removeById(positions);
-                } else {
-                    mMPD.removeFromPlaylist(mPlaylist, positions);
-                }
-            } catch (final IOException | MPDException e) {
-                Log.e(TAG, "Failed to remove.", e);
+            if (mIsPlayQueue) {
+                mMPD.getPlaylist().removeById(positions);
+            } else {
+                mMPD.removeFromPlaylist(mPlaylist, positions);
             }
 
             if (copy.size() != mSongList.size()) {

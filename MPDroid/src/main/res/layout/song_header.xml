@@ -23,7 +23,7 @@
     android:focusable="false"
     tools:ignore="InconsistentLayout">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
             tools:text="Tracks" />
     </RelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/album_menu"
         android:layout_width="64dp"
         android:layout_height="64dp"

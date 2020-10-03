@@ -34,7 +34,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -54,6 +53,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.StringRes;
 
 /**
  * This fragment is used to display a list of Streams in a special playlist on the connected MPD
@@ -88,7 +89,7 @@ public class StreamsFragment extends BrowseFragment<Stream> {
             mApp.getMPD().addStream(
                     StreamFetcher.instance().get(item.getUrl(), item.getName()), replace, play);
             Tools.notifyUser(mIrAdded, item);
-        } catch (final IOException | MPDException e) {
+        } catch (final IOException e) {
             Log.e(TAG, "Failed to add stream.", e);
         }
     }
@@ -362,12 +363,8 @@ public class StreamsFragment extends BrowseFragment<Stream> {
         @Override
         public void onClick(final DialogInterface dialog, final int which) {
             if (which == DialogInterface.BUTTON_POSITIVE) {
-                try {
-                    mApp.getMPD().removeSavedStream(mItemIndex);
-                    Tools.notifyUser(R.string.streamDeleted, mStreamName);
-                } catch (final IOException | MPDException e) {
-                    Log.e(TAG, "Failed to removed a saved stream.", e);
-                }
+                mApp.getMPD().removeSavedStream(mItemIndex);
+                Tools.notifyUser(R.string.streamDeleted, mStreamName);
             }
         }
     }
@@ -419,19 +416,10 @@ public class StreamsFragment extends BrowseFragment<Stream> {
             if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(url)) {
                 if (mIndex >= 0 && mIndex < mItems.size()) {
                     final MPD mpd = mApp.getMPD();
-
-                    try {
-                        mpd.removeSavedStream(mIndex);
-                    } catch (final IOException | MPDException e) {
-                        Log.e(TAG, "Failed to edit a saved stream.", e);
-                    }
+                    mpd.removeSavedStream(mIndex);
                 }
 
-                try {
-                    mApp.getMPD().saveStream(url, name);
-                } catch (final IOException | MPDException e) {
-                    Log.e(TAG, "Failed to save stream.", e);
-                }
+                mApp.getMPD().saveStream(url, name);
 
                 if (mStreamUrlToAdd != null) {
                     Toast.makeText(getActivity(), R.string.streamSaved,

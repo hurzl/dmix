@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JMPDComm/backends/android/JMPDCommAndroid.iml" filepath="$PROJECT_DIR$/JMPDComm/backends/android/JMPDCommAndroid.iml" />
-      <module fileurl="file://$PROJECT_DIR$/JMPDComm/backends/java/JMPDCommJava.iml" filepath="$PROJECT_DIR$/JMPDComm/backends/java/JMPDCommJava.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MPDroid/MPDroid.iml" filepath="$PROJECT_DIR$/MPDroid/MPDroid.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dmix.iml" filepath="$PROJECT_DIR$/dmix.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JMPDComm/backends/android/JMPDCommAndroid.iml" filepath="$PROJECT_DIR$/JMPDComm/backends/android/JMPDCommAndroid.iml" group="dmix/JMPDCommAndroid" />
+      <module fileurl="file://$PROJECT_DIR$/JMPDComm/backends/java/JMPDCommJava.iml" filepath="$PROJECT_DIR$/JMPDComm/backends/java/JMPDCommJava.iml" group="dmix/JMPDCommJava" />
+      <module fileurl="file://$PROJECT_DIR$/MPDroid/MPDroid.iml" filepath="$PROJECT_DIR$/MPDroid/MPDroid.iml" group="dmix/MPDroid" />
+      <module fileurl="file://$PROJECT_DIR$/dmix.iml" filepath="$PROJECT_DIR$/dmix.iml" group="dmix" />
     </modules>
   </component>
 </project>

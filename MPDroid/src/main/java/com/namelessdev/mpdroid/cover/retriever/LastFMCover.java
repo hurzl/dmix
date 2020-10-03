@@ -22,7 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;

@@ -19,7 +19,7 @@ package com.namelessdev.mpdroid.adapters;
 import com.namelessdev.mpdroid.R;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

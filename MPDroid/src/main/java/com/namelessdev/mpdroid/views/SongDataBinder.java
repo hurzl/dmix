@@ -26,7 +26,7 @@ import com.namelessdev.mpdroid.views.holders.SongViewHolder;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;

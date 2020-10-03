@@ -38,7 +38,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;

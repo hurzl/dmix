@@ -26,8 +26,8 @@ import com.namelessdev.mpdroid.tools.Tools;
 
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;

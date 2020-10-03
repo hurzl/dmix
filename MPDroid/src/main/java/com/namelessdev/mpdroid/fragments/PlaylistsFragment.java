@@ -16,7 +16,6 @@
 
 package com.namelessdev.mpdroid.fragments;
 
-import com.anpmech.mpd.exception.MPDException;
 import com.anpmech.mpd.item.Artist;
 import com.anpmech.mpd.item.PlaylistFile;
 import com.anpmech.mpd.item.Stream;
@@ -32,8 +31,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -43,7 +40,8 @@ import android.view.WindowManager.BadTokenException;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-import java.io.IOException;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
 
 /**
  * This Fragment lists the current stored {@link PlaylistFile}s.
@@ -66,14 +64,11 @@ public class PlaylistsFragment extends BrowseFragment<PlaylistFile> {
 
     @Override
     protected void add(final PlaylistFile item, final boolean replace, final boolean play) {
-        try {
-            mApp.getMPD().add(item, replace, play);
-            if (isAdded()) {
-                Tools.notifyUser(mIrAdded, item);
-            }
-
-        } catch (final IOException | MPDException e) {
-            Log.e(TAG, "Failed to add.", e);
+        mApp.getMPD().add(item, replace, play);
+        if (isAdded()) {
+            Tools.notifyUser(mIrAdded, item);
+        } else {
+            Log.e(TAG, "Failed to add.");
         }
     }
 
@@ -195,12 +190,10 @@ public class PlaylistsFragment extends BrowseFragment<PlaylistFile> {
         public void onClick(final DialogInterface dialog, final int which) {
             if (which == DialogInterface.BUTTON_POSITIVE) {
                 final String playlist = mItems.get(mItemIndex).getName();
-                try {
-                    mApp.getMPD().getPlaylist().removePlaylist(playlist);
-                    if (isAdded()) {
-                        Tools.notifyUser(R.string.playlistDeleted, playlist);
-                    }
-                } catch (final IOException | MPDException e) {
+                mApp.getMPD().getPlaylist().removePlaylist(playlist);
+                if (isAdded()) {
+                    Tools.notifyUser(R.string.playlistDeleted, playlist);
+                } else {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle(R.string.deletePlaylist);
                     builder.setMessage(

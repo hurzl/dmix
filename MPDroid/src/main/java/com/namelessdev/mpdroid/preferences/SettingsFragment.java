@@ -17,15 +17,14 @@
 package com.namelessdev.mpdroid.preferences;
 
 import com.anpmech.mpd.MPD;
-import com.anpmech.mpd.exception.MPDException;
 import com.anpmech.mpd.subsystem.status.MPDStatistics;
 import com.namelessdev.mpdroid.MPDApplication;
 import com.namelessdev.mpdroid.R;
 import com.namelessdev.mpdroid.SearchRecentProvider;
 import com.namelessdev.mpdroid.cover.CoverManager;
 import com.namelessdev.mpdroid.cover.retriever.CachedCover;
-import com.namelessdev.mpdroid.tools.Tools;
 import com.namelessdev.mpdroid.helpers.CachedMPD;
+import com.namelessdev.mpdroid.tools.Tools;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -39,11 +38,9 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.provider.SearchRecentSuggestions;
-import android.support.annotation.NonNull;
 import android.text.format.Formatter;
-import android.util.Log;
 
-import java.io.IOException;
+import androidx.annotation.NonNull;
 
 public class SettingsFragment extends PreferenceFragment {
 
@@ -199,11 +196,7 @@ public class SettingsFragment extends PreferenceFragment {
         }
 
         if ("refreshMPDDatabase".equals(preference.getKey())) {
-            try {
-                mApp.getMPD().refreshDatabase();
-            } catch (final IOException | MPDException e) {
-                Log.e(TAG, "Failed to refresh the database.", e);
-            }
+            mApp.getMPD().refreshDatabase();
             return true;
         } else if ("clearLocalCoverCache".equals(preference.getKey())) {
             new AlertDialog.Builder(getActivity())

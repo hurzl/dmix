@@ -19,7 +19,7 @@ package com.namelessdev.mpdroid.fragments;
 import com.anpmech.mpd.item.Item;
 import com.crashlytics.android.Crashlytics;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;

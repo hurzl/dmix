@@ -77,6 +77,7 @@ import java.util.Map;
  * This is a class containing instantiations of commonly used objects and uses for convenience of
  * a MPD client.
  */
+@SuppressWarnings("unused")
 public class MPD {
 
     private static final String TAG = "MPD";
@@ -286,14 +287,10 @@ public class MPD {
 
         if (isCommandAvailable(MPDCommand.MPD_CMD_FIND_ADD)) {
             commandQueue = new CommandQueue();
-
-            commandQueue
-                    .add(MPDCommand.MPD_CMD_FIND_ADD, Music.TAG_ARTIST, artist.getName());
+            commandQueue.add(MPDCommand.MPD_CMD_FIND_ADD, Music.TAG_ARTIST, artist.getName());
         } else {
             final List<Music> songs = getSongs(artist);
-
             Collections.sort(songs);
-
             commandQueue = MPDPlaylist.addAllCommand(songs);
         }
 
@@ -307,11 +304,8 @@ public class MPD {
      * @param music   {@code Music} item object to be added to the media server playlist queue.
      * @param replace Whether to clear the playlist queue prior to adding the item(s).
      * @param play    Whether to play the playlist queue after adding the item(s).
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void add(final FilesystemTreeEntry music, final boolean replace, final boolean play)
-            throws IOException, MPDException {
+    public void add(final FilesystemTreeEntry music, final boolean replace, final boolean play) {
         if (music instanceof PlaylistFile) {
             add((PlaylistFile) music, replace, play);
         } else {
@@ -327,10 +321,8 @@ public class MPD {
      * Add a {@code Music} item object to the playlist queue.
      *
      * @param music {@code Music} item object to be added to the playlist queue.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void add(final FilesystemTreeEntry music) throws IOException, MPDException {
+    public void add(final FilesystemTreeEntry music) {
         add(music, false, false);
     }
 
@@ -361,32 +353,30 @@ public class MPD {
      *                     the queue.
      * @param replace      If true, replaces the entire playlist queue with the added files.
      * @param playAfterAdd If true, starts playing once added.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
     private void add(final CommandQueue commandQueue, final boolean replace,
-            final boolean playAfterAdd) throws IOException, MPDException {
+            final boolean playAfterAdd) {
         int playPos = 0;
         final boolean isPlaying = mStatus.isState(MPDStatusMap.STATE_PLAYING);
         final boolean isConsume = mStatus.isConsume();
         final boolean isRandom = mStatus.isRandom();
         final int playlistLength = mStatus.getPlaylistLength();
 
-        /** Replace */
+        /* Replace */
         if (replace) {
             if (isPlaying) {
                 if (playlistLength > 1) {
                     try {
                         commandQueue.addAll(0, MPDPlaylist.cropCommand(this));
                     } catch (final IllegalStateException ignored) {
-                        /** Shouldn't occur, we already checked for playing. */
+                        /* Shouldn't occur, we already checked for playing. */
                     }
                 }
             } else {
                 commandQueue.add(0, MPDPlaylist.clearCommand());
             }
         } else if (playAfterAdd && !isRandom) {
-            /** Since we didn't clear the playlist queue, we need to play the (current queue+1) */
+            /* Since we didn't clear the playlist queue, we need to play the (current queue+1) */
             playPos = mPlaylist.size();
         }
 
@@ -400,18 +390,18 @@ public class MPD {
             commandQueue.add(Playback.CMD_ACTION_PLAY, Integer.toString(playPos));
         }
 
-        /** Finally, clean up the last playing song. */
+        /* Finally, clean up the last playing song. */
         if (replace && isPlaying && !isConsume) {
             commandQueue.add(MPDPlaylist.MPD_CMD_PLAYLIST_REMOVE, "0");
 
         }
 
-        /**
+        /*
          * It's rare, but possible to make it through the add()
          * methods without adding to the command queue.
          */
         if (!commandQueue.isEmpty()) {
-            mConnection.send(commandQueue);
+            mConnection.submit(commandQueue);
         }
     }
 
@@ -420,10 +410,8 @@ public class MPD {
      *
      * @param databasePlaylist A playlist item stored on the media server to add to the playlist
      *                         queue.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void add(final PlaylistFile databasePlaylist) throws IOException, MPDException {
+    public void add(final PlaylistFile databasePlaylist) {
         add(databasePlaylist, false, false);
     }
 
@@ -436,11 +424,9 @@ public class MPD {
      *                         databasePlaylist string.
      * @param play             Whether to play the playlist queue prior after adding the
      *                         databasePlaylist string.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
     public void add(final PlaylistFile databasePlaylist, final boolean replace,
-            final boolean play) throws IOException, MPDException {
+            final boolean play) {
         final CommandQueue commandQueue = new CommandQueue();
 
         commandQueue.add(MPDPlaylist.loadCommand(databasePlaylist.getName()));
@@ -463,7 +449,7 @@ public class MPD {
 
             albumBuilder.setAlbum(albums.get(i));
 
-            /** First, extract the album specifics from the response. */
+            /* First, extract the album specifics from the response. */
             for (final Map.Entry<String, String> entry : new KeyValueResponse(response)) {
                 switch (entry.getKey()) {
                     case "songs":
@@ -477,7 +463,7 @@ public class MPD {
                 }
             }
 
-            /** Then extract the date and path from a song of the album. */
+            /* Then extract the date and path from a song of the album. */
             final Music song = getFirstTrack(album);
 
             if (song != null) {
@@ -512,11 +498,8 @@ public class MPD {
      *
      * @param replace      If true, replaces the entire playlist queue with the added files.
      * @param playAfterAdd If true, starts playing once added.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void addAll(final boolean replace, final boolean playAfterAdd)
-            throws IOException, MPDException {
+    public void addAll(final boolean replace, final boolean playAfterAdd) {
         final CommandQueue commandQueue = new CommandQueue();
 
         commandQueue.add(MPDPlaylist.MPD_CMD_PLAYLIST_ADD, "/");
@@ -530,11 +513,8 @@ public class MPD {
      * @param stream       The stream to add to the queue.
      * @param replace      If true, replaces the entire playlist queue with the added files.
      * @param playAfterAdd If true, starts playing once added.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void addStream(final String stream, final boolean replace, final boolean playAfterAdd)
-            throws IOException, MPDException {
+    public void addStream(final String stream, final boolean replace, final boolean playAfterAdd) {
         final CommandQueue commandQueue = new CommandQueue();
         commandQueue.add(MPDPlaylist.addCommand(stream));
 
@@ -547,7 +527,7 @@ public class MPD {
         if (mIdleConnection.isCommandAvailable(MPDCommand.MPD_CMD_SEARCH_ADD_PLAYLIST)) {
             final String[] artistPair = getAlbumArtistPair(album);
 
-            mConnection.send(MPDCommand.MPD_CMD_SEARCH_ADD_PLAYLIST, playlist.getFullPath(),
+            mConnection.submit(MPDCommand.MPD_CMD_SEARCH_ADD_PLAYLIST, playlist.getFullPath(),
                     Music.TAG_ALBUM, album.getName(), artistPair[0], artistPair[1]);
         } else {
             final List<Music> songs = getSongs(album);
@@ -562,7 +542,7 @@ public class MPD {
     public void addToPlaylist(final PlaylistFile playlist, final Artist artist)
             throws IOException, MPDException {
         if (mIdleConnection.isCommandAvailable(MPDCommand.MPD_CMD_SEARCH_ADD_PLAYLIST)) {
-            mConnection.send(MPDCommand.MPD_CMD_SEARCH_ADD_PLAYLIST, playlist.getFullPath(),
+            mConnection.submit(MPDCommand.MPD_CMD_SEARCH_ADD_PLAYLIST, playlist.getFullPath(),
                     Music.TAG_ARTIST, artist.getName());
         } else {
             final List<Music> songs = getSongs(artist);
@@ -574,8 +554,7 @@ public class MPD {
     }
 
     @SuppressWarnings("TypeMayBeWeakened")
-    public void addToPlaylist(final PlaylistFile playlist, final Collection<Music> musicCollection)
-            throws IOException, MPDException {
+    public void addToPlaylist(final PlaylistFile playlist, final Collection<Music> musicCollection) {
         if (!musicCollection.isEmpty()) {
             final CommandQueue commandQueue = new CommandQueue();
 
@@ -584,21 +563,20 @@ public class MPD {
                         .add(MPDCommand.MPD_CMD_PLAYLIST_ADD, playlist.getFullPath(),
                                 music.getFullPath());
             }
-            mConnection.send(commandQueue);
+            mConnection.submit(commandQueue);
         }
     }
 
     @SuppressWarnings("TypeMayBeWeakened")
-    public void addToPlaylist(final PlaylistFile playlist, final FilesystemTreeEntry entry)
-            throws IOException, MPDException {
-        mConnection.send(MPDCommand.MPD_CMD_PLAYLIST_ADD, playlist.getFullPath(),
+    public void addToPlaylist(final PlaylistFile playlist, final FilesystemTreeEntry entry) {
+        mConnection.submit(MPDCommand.MPD_CMD_PLAYLIST_ADD, playlist.getFullPath(),
                 entry.getFullPath());
     }
 
     public void addToPlaylist(final PlaylistFile playlist, final Genre genre)
             throws IOException, MPDException {
         if (mIdleConnection.isCommandAvailable(MPDCommand.MPD_CMD_SEARCH_ADD_PLAYLIST)) {
-            mConnection.send(MPDCommand.MPD_CMD_SEARCH_ADD_PLAYLIST, playlist.getFullPath(),
+            mConnection.submit(MPDCommand.MPD_CMD_SEARCH_ADD_PLAYLIST, playlist.getFullPath(),
                     Music.TAG_GENRE, genre.getName());
         } else {
             final List<Music> music = new ArrayList<>(find(Music.TAG_GENRE, genre.getName()));
@@ -608,19 +586,15 @@ public class MPD {
         }
     }
 
-    public void addToPlaylist(final PlaylistFile playlist, final Music music)
-            throws IOException, MPDException {
+    public void addToPlaylist(final PlaylistFile playlist, final Music music) {
         addToPlaylist(playlist, Collections.singletonList(music));
     }
 
     /**
      * Clears error message.
-     *
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void clearError() throws IOException, MPDException {
-        mConnection.send(MPDCommand.MPD_CMD_CLEARERROR);
+    public void clearError() {
+        mConnection.submit(MPDCommand.MPD_CMD_CLEARERROR);
     }
 
     /**
@@ -684,8 +658,8 @@ public class MPD {
         connect(host, port);
     }
 
-    public void disableOutput(final int id) throws IOException, MPDException {
-        mConnection.send(MPDCommand.MPD_CMD_OUTPUTDISABLE, Integer.toString(id));
+    public void disableOutput(final int id) {
+        mConnection.submit(MPDCommand.MPD_CMD_OUTPUTDISABLE, Integer.toString(id));
     }
 
     /**
@@ -736,9 +710,9 @@ public class MPD {
             final List<List<String>> albumArtists = listAlbumArtists(albums);
 
             if (albumArtists.size() == albums.size()) {
-                /** Split albums are rare, let it allocate as needed. */
-                @SuppressWarnings("CollectionWithoutInitialCapacity")
-                final Collection<Album> splitAlbums = new ArrayList<>();
+                /* Split albums are rare, let it allocate as needed. */
+                @SuppressWarnings("CollectionWithoutInitialCapacity") final Collection<Album>
+                        splitAlbums = new ArrayList<>();
                 final AlbumBuilder albumBuilder = new AlbumBuilder();
                 int i = 0;
                 for (final Album album : albums) {
@@ -1346,7 +1320,7 @@ public class MPD {
             } else if (albumResponse.equals(entry.getKey())) {
                 if (currentAlbum != null) {
                     albumBuilder.setName(currentAlbum);
-                    /** There was no artist in this response, add the album alone */
+                    /* There was no artist in this response, add the album alone */
                     result.add(albumBuilder.build());
                 }
 
@@ -1379,7 +1353,7 @@ public class MPD {
     @SuppressWarnings("TypeMayBeWeakened")
     public void movePlaylistSong(final PlaylistFile playlist, final int from, final int to)
             throws IOException, MPDException {
-        mConnection.send(MPDCommand.MPD_CMD_PLAYLIST_MOVE, playlist.getFullPath(),
+        mConnection.submit(MPDCommand.MPD_CMD_PLAYLIST_MOVE, playlist.getFullPath(),
                 Integer.toString(from), Integer.toString(to));
     }
 
@@ -1396,23 +1370,18 @@ public class MPD {
 
     /**
      * Tells server to refresh database.
-     *
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void refreshDatabase() throws IOException, MPDException {
-        mConnection.send(MPDCommand.MPD_CMD_REFRESH);
+    public void refreshDatabase() {
+        mConnection.submit(MPDCommand.MPD_CMD_REFRESH);
     }
 
     /**
      * Tells server to refresh database.
      *
      * @param folder The folder to use as the root for the database refresh.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void refreshDatabase(final String folder) throws IOException, MPDException {
-        mConnection.send(MPDCommand.MPD_CMD_REFRESH, folder);
+    public void refreshDatabase(final String folder) {
+        mConnection.submit(MPDCommand.MPD_CMD_REFRESH, folder);
     }
 
     /**
@@ -1420,12 +1389,9 @@ public class MPD {
      *
      * @param playlist  The playlist file to remove tracks from.
      * @param positions The positions of the tracks to remove from the playlist file.
-     * @throws IOException  Thrown upon a communication error with the server.
-     * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
     @SuppressWarnings("TypeMayBeWeakened")
-    public void removeFromPlaylist(final PlaylistFile playlist, final List<Integer> positions)
-            throws IOException, MPDException {
+    public void removeFromPlaylist(final PlaylistFile playlist, final List<Integer> positions) {
         Collections.sort(positions, Collections.reverseOrder());
         final CommandQueue commandQueue = new CommandQueue(positions.size());
 
@@ -1434,26 +1400,24 @@ public class MPD {
                     position.toString());
         }
 
-        mConnection.send(commandQueue);
+        mConnection.submit(commandQueue);
     }
 
     @SuppressWarnings("TypeMayBeWeakened")
-    public void removeFromPlaylist(final PlaylistFile playlist, final int pos)
-            throws IOException, MPDException {
+    public void removeFromPlaylist(final PlaylistFile playlist, final int pos) {
         removeFromPlaylist(playlist.getFullPath(), pos);
     }
 
-    private void removeFromPlaylist(final String playlist, final int pos)
-            throws IOException, MPDException {
-        mConnection.send(MPDCommand.MPD_CMD_PLAYLIST_DEL, playlist, Integer.toString(pos));
+    private void removeFromPlaylist(final String playlist, final int pos) {
+        mConnection.submit(MPDCommand.MPD_CMD_PLAYLIST_DEL, playlist, Integer.toString(pos));
     }
 
-    public void removeSavedStream(final int pos) throws IOException, MPDException {
+    public void removeSavedStream(final int pos) {
         removeFromPlaylist(Stream.PLAYLIST_NAME, pos);
     }
 
-    public void saveStream(final String url, final String name) throws IOException, MPDException {
-        mConnection.send(MPDCommand.MPD_CMD_PLAYLIST_ADD, Stream.PLAYLIST_NAME,
+    public void saveStream(final String url, final String name) {
+        mConnection.submit(MPDCommand.MPD_CMD_PLAYLIST_ADD, Stream.PLAYLIST_NAME,
                 Stream.addStreamName(url, name));
     }
 
@@ -1495,7 +1459,7 @@ public class MPD {
      * @throws IOException  Thrown upon a communication error with the server.
      * @throws MPDException Thrown if an error occurs as a result of command execution.
      */
-    public void shutdown() throws IOException, MPDException {
-        mConnection.send(MPDCommand.MPD_CMD_KILL);
+    public void shutdown() {
+        mConnection.submit(MPDCommand.MPD_CMD_KILL);
     }
 }

@@ -23,7 +23,7 @@ import com.namelessdev.mpdroid.cover.CoverAsyncHelper;
 import com.namelessdev.mpdroid.helpers.AlbumInfo;
 import com.namelessdev.mpdroid.views.holders.AlbumViewHolder;
 
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 
 public class AlbumGridDataBinder extends AlbumDataBinder<Album> {
 

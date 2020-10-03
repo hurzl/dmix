@@ -33,12 +33,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.SearchRecentSuggestions;
-import android.support.annotation.StringRes;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.SearchView;
+
+import androidx.annotation.StringRes;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.SearchView;
+
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -172,12 +174,8 @@ public class SearchActivity extends MPDActivity implements OnMenuItemClickListen
     }
 
     protected void add(final Music music, final boolean replace, final boolean play) {
-        try {
-            mApp.getMPD().add(music, replace, play);
-            Tools.notifyUser(R.string.songAdded, music.getTitle(), music.getName());
-        } catch (final IOException | MPDException e) {
-            Log.e(TAG, "Failed to add.", e);
-        }
+        mApp.getMPD().add(music, replace, play);
+        Tools.notifyUser(R.string.songAdded, music.getTitle(), music.getName());
     }
 
     protected void add(final Object object, final boolean replace, final boolean play) {
@@ -239,7 +237,7 @@ public class SearchActivity extends MPDActivity implements OnMenuItemClickListen
                             if (!mArtistResults.contains(artist)) {
                                 mArtistResults.add(artist);
                             }
-                    }
+                        }
                     }
                 }
             }
@@ -582,46 +580,46 @@ public class SearchActivity extends MPDActivity implements OnMenuItemClickListen
         });
     }
 
-    class SearchResultsPagerAdapter extends PagerAdapter {
+class SearchResultsPagerAdapter extends PagerAdapter {
 
-        @Override
-        public void destroyItem(final ViewGroup container, final int position,
-                final Object object) {
-            container.removeView((View) object);
-        }
-
-        @Override
-        public int getCount() {
-            return 3;
-        }
-
-        @Override
-        public Object instantiateItem(final ViewGroup container, final int position) {
-
-            final View v;
-            switch (position) {
-                case RESULT_ALBUM:
-                    v = mListAlbumsFrame;
-                    break;
-                case RESULT_ARTIST:
-                    v = mListArtistsFrame;
-                    break;
-                case RESULT_MUSIC:
-                    v = mListSongsFrame;
-                    break;
-                default:
-                    throw new UnsupportedOperationException(UNKNOWN_ITEM_ERROR);
-            }
-            if (v.getParent() == null) {
-                mPager.addView(v);
-            }
-            return v;
-        }
-
-        @Override
-        public boolean isViewFromObject(final View arg0, final Object arg1) {
-            return arg0.equals(arg1);
-        }
+    @Override
+    public void destroyItem(final ViewGroup container, final int position,
+            final Object object) {
+        container.removeView((View) object);
     }
+
+    @Override
+    public int getCount() {
+        return 3;
+    }
+
+    @Override
+    public Object instantiateItem(final ViewGroup container, final int position) {
+
+        final View v;
+        switch (position) {
+            case RESULT_ALBUM:
+                v = mListAlbumsFrame;
+                break;
+            case RESULT_ARTIST:
+                v = mListArtistsFrame;
+                break;
+            case RESULT_MUSIC:
+                v = mListSongsFrame;
+                break;
+            default:
+                throw new UnsupportedOperationException(UNKNOWN_ITEM_ERROR);
+        }
+        if (v.getParent() == null) {
+            mPager.addView(v);
+        }
+        return v;
+    }
+
+    @Override
+    public boolean isViewFromObject(final View arg0, final Object arg1) {
+        return arg0.equals(arg1);
+    }
+}
 
 }

@@ -28,7 +28,6 @@ import com.namelessdev.mpdroid.helpers.MPDAsyncHelper;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
@@ -41,6 +40,9 @@ import android.widget.ListView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.ListFragment;
 
 /**
  * This fragment is used to display {@link AudioOutput} information and status.
@@ -70,7 +72,7 @@ public class OutputsFragment extends ListFragment implements AdapterView.OnItemC
      */
     @Override
     public void asyncComplete(final CharSequence token) {
-        if (AudioOutput.EXTRA.equals(token)) {
+        if (AudioOutput.EXTRA.contentEquals(token)) {
             try {
                 ((BaseAdapter) getListAdapter()).notifyDataSetChanged();
                 final ListView list = getListView();
@@ -142,6 +144,7 @@ public class OutputsFragment extends ListFragment implements AdapterView.OnItemC
 
         final Activity activity = getActivity();
         final ListView listView = getListView();
+        assert activity != null;
         final ListAdapter arrayAdapter = new ArrayAdapter<>(activity,
                 android.R.layout.simple_list_item_multiple_choice, mOutputs);
         setListAdapter(arrayAdapter);
@@ -163,22 +166,17 @@ public class OutputsFragment extends ListFragment implements AdapterView.OnItemC
         } else {
             final MPD mpd = mApp.getMPD();
             final AudioOutput output = mOutputs.get(position);
-
-            try {
-                if (getListView().isItemChecked(position)) {
-                    mpd.enableOutput(output.getId());
-                } else {
-                    mpd.disableOutput(output.getId());
-                }
-            } catch (final IOException | IllegalStateException | MPDException e) {
-                Log.e(TAG, "Failed to modify output.", e);
+            if (getListView().isItemChecked(position)) {
+                mpd.enableOutput(output.getId());
+            } else {
+                mpd.disableOutput(output.getId());
             }
         }
     }
 
     /**
      * Called when the Fragment is no longer resumed.  This is generally
-     * tied to {@link Activity#onPause() Activity.onPause} of the containing
+     * tied to {@link ListFragment#onPause() ListFragment.onPause} of the containing
      * Activity's lifecycle.
      */
     @Override
@@ -191,7 +189,7 @@ public class OutputsFragment extends ListFragment implements AdapterView.OnItemC
     /**
      * Called when the fragment is visible to the user and actively running.
      * This is generally
-     * tied to {@link Activity#onResume() Activity.onResume} of the containing
+     * tied to {@link ListFragment#onResume() ListFragment.onResume} of the containing
      * Activity's lifecycle.
      */
     @Override
@@ -266,6 +264,7 @@ public class OutputsFragment extends ListFragment implements AdapterView.OnItemC
     }
 
     @Override
+    @NonNull
     public String toString() {
         return AudioOutput.EXTRA;
     }

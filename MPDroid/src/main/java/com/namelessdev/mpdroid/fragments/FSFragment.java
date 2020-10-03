@@ -34,9 +34,6 @@ import com.namelessdev.mpdroid.tools.Tools;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -54,6 +51,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class FSFragment extends BrowseFragment {
 
@@ -119,46 +120,38 @@ public class FSFragment extends BrowseFragment {
 
     @Override
     protected void add(final Item item, final boolean replace, final boolean play) {
-        try {
-            final String name = item.getName();
+        final String name = item.getName();
 
-            if (mDirectory.containsPath(name)) {
-                // Valid directory
-                mApp.getMPD().add(Directory.byPath(name), replace, play);
-                Tools.notifyUser(R.string.addedDirectoryToPlaylist, item);
+        if (mDirectory.containsPath(name)) {
+            // Valid directory
+            mApp.getMPD().add(Directory.byPath(name), replace, play);
+            Tools.notifyUser(R.string.addedDirectoryToPlaylist, item);
+        } else {
+            mApp.getMPD().add((FilesystemTreeEntry) item, replace, play);
+            if (item instanceof PlaylistFile) {
+                Tools.notifyUser(R.string.playlistAdded, item);
             } else {
-                mApp.getMPD().add((FilesystemTreeEntry) item, replace, play);
-                if (item instanceof PlaylistFile) {
-                    Tools.notifyUser(R.string.playlistAdded, item);
-                } else {
-                    Tools.notifyUser(R.string.songAdded, item);
-                }
+                Tools.notifyUser(R.string.songAdded, item);
             }
-        } catch (final IOException | MPDException e) {
-            Log.e(TAG, "Failed to add.", e);
         }
     }
 
     @Override
     protected void add(final Item item, final PlaylistFile playlist) {
-        try {
-            final String name = item.getName();
+        final String name = item.getName();
 
-            if (mDirectory.containsPath(name)) {
-                // Valid directory
-                mApp.getMPD().addToPlaylist(playlist, Directory.byPath(name));
-                Tools.notifyUser(R.string.addedDirectoryToPlaylist, item);
-            } else {
-                if (item instanceof Music) {
-                    mApp.getMPD().addToPlaylist(playlist, (Music) item);
-                    Tools.notifyUser(R.string.songAdded, item);
-                } else if (item instanceof PlaylistFile) {
-                    mApp.getMPD().getPlaylist()
-                            .load(((FilesystemTreeEntry) item).getFullPath());
-                }
+        if (mDirectory.containsPath(name)) {
+            // Valid directory
+            mApp.getMPD().addToPlaylist(playlist, Directory.byPath(name));
+            Tools.notifyUser(R.string.addedDirectoryToPlaylist, item);
+        } else {
+            if (item instanceof Music) {
+                mApp.getMPD().addToPlaylist(playlist, (Music) item);
+                Tools.notifyUser(R.string.songAdded, item);
+            } else if (item instanceof PlaylistFile) {
+                mApp.getMPD().getPlaylist()
+                        .load(((FilesystemTreeEntry) item).getFullPath());
             }
-        } catch (final IOException | MPDException e) {
-            Log.e(TAG, "Failed to add.", e);
         }
     }
 
@@ -279,11 +272,11 @@ public class FSFragment extends BrowseFragment {
     @Override
     public void onCreateContextMenu(final ContextMenu menu, final View v,
             final ContextMenu.ContextMenuInfo menuInfo) {
-            // Don't create a context menu if the child directory item is clicked.
-            if (mDirectory.getParent() == null ||
-                    ((AdapterView.AdapterContextMenuInfo) menuInfo).id != 0L) {
-                super.onCreateContextMenu(menu, v, menuInfo);
-            }
+        // Don't create a context menu if the child directory item is clicked.
+        if (mDirectory.getParent() == null ||
+                ((AdapterView.AdapterContextMenuInfo) menuInfo).id != 0L) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+        }
     }
 
     @Override
@@ -392,19 +385,14 @@ public class FSFragment extends BrowseFragment {
         @Override
         public void run() {
             final MPDApplication app = MPDApplication.getInstance();
-
-            try {
-                if (mItem instanceof Music) {
-                    final boolean inSimpleMode = app.isInSimpleMode();
-                    app.getMPD().add(mItem, inSimpleMode, inSimpleMode);
-                    if (!inSimpleMode) {
-                        Tools.notifyUser(R.string.songAdded, mItem);
-                    }
-                } else if (mItem instanceof PlaylistFile) {
-                    app.getMPD().getPlaylist().load(mItem.getFullPath());
+            if (mItem instanceof Music) {
+                final boolean inSimpleMode = app.isInSimpleMode();
+                app.getMPD().add(mItem, inSimpleMode, inSimpleMode);
+                if (!inSimpleMode) {
+                    Tools.notifyUser(R.string.songAdded, mItem);
                 }
-            } catch (final IOException | MPDException e) {
-                Log.e(TAG, "Failed to add item: " + mItem, e);
+            } else if (mItem instanceof PlaylistFile) {
+                app.getMPD().getPlaylist().load(mItem.getFullPath());
             }
         }
     }
@@ -503,11 +491,7 @@ public class FSFragment extends BrowseFragment {
 
         @Override
         public void run() {
-            try {
-                MPDApplication.getInstance().getMPD().refreshDatabase(mDirectory.getFullPath());
-            } catch (final IOException | MPDException e) {
-                Log.e(TAG, "Failed to refresh database.", e);
-            }
+            MPDApplication.getInstance().getMPD().refreshDatabase(mDirectory.getFullPath());
         }
     }
 }
