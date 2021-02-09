@@ -32,12 +32,13 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import android.transition.Transition;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MainMenuActivity extends MPDActivity implements
         ILibraryFragmentActivity {
@@ -91,7 +92,8 @@ public class MainMenuActivity extends MPDActivity implements
 
     private void initializeLibraryFragment() {
         if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_LIBRARY) == null) {
-            final Fragment fragment = Fragment.instantiate(this, LibraryFragment.class.getName());
+            final Fragment fragment = getSupportFragmentManager().getFragmentFactory()
+                    .instantiate(getClassLoader(), LibraryFragment.class.getName());
             final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.replace(R.id.library_root_frame, fragment, FRAGMENT_TAG_LIBRARY);
@@ -109,12 +111,7 @@ public class MainMenuActivity extends MPDActivity implements
             if (settings.getBoolean("enableExitConfirmation", false) && mBackPressExitCount < 1) {
                 Tools.notifyUser(R.string.backpressToQuit);
                 mBackPressExitCount += 1;
-                mExitCounterReset.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mBackPressExitCount = 0;
-                    }
-                }, 5000L);
+                mExitCounterReset.postDelayed(() -> mBackPressExitCount = 0, 5000L);
             } else {
                 finish();
             }
@@ -140,7 +137,7 @@ public class MainMenuActivity extends MPDActivity implements
 
         initializeLibraryFragment();
 
-        /** Reset the persistent override when the application is reset. */
+        /* Reset the persistent override when the application is reset. */
         mApp.setPersistentOverride(false);
     }
 

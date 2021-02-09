@@ -14,43 +14,31 @@
  * limitations under the License.
  */
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 
 buildscript {
     repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.28.0'
+        mavenCentral()
     }
 }
 
 repositories {
     mavenCentral()
-    jcenter()
     google()
-    maven { url 'https://maven.fabric.io/public' }
 }
 
-def gitShortHash() {
+static def gitShortHash() {
     return "git rev-parse --short HEAD".execute().text.trim()
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    compileSdkVersion 31
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 31
         versionCode 58
         versionName "1.08 Beta 4 " + gitShortHash()
-    }
-
-    lintOptions {
-        abortOnError false
-        checkReleaseBuilds false
     }
 
     compileOptions {
@@ -70,16 +58,21 @@ android {
         all {
             dimension "version"
             // Disable Crashlytics by default.
-            ext.enableCrashlytics = false;
+            ext.enableCrashlytics = false
         }
         foss {
             dimension "version"
             versionName defaultConfig.versionName + "-f"
             dependencies {
-                testImplementation 'junit:junit:4.12'
+                testImplementation 'junit:junit:4.13.2'
                 testImplementation "org.robolectric:robolectric:3.0"
             }
-            ext.enableCrashlytics = false;
+            ext.enableCrashlytics = false
+        }
+    }
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/INDEX.LIST']
         }
     }
 
@@ -100,7 +93,7 @@ android {
                     mTask: "${variant.name}Javadoc",
                     mIndexFile: file("${destinationDir}/index.html"))
 
-            dependsOn = [':JMPDCommAndroid:debugJavadoc'];
+            dependsOn = [':JMPDCommAndroid:debugJavadoc']
 
             options {
                 author = true
@@ -109,10 +102,10 @@ android {
                 links("http://docs.oracle.com/javase/8/docs/api",
                         project.tasks.getByPath(":JMPDCommAndroid:debugJavadoc")
                                 .getDestinationDir()
-                                .toString());
+                                .toString())
                 linksOffline("http://developer.android.com/reference",
-                        "${android.sdkDirectory}/docs/reference");
-                overview("src/main/overview.html");
+                        "${android.sdkDirectory}/docs/reference")
+                overview("src/main/overview.html")
                 showAll()
             }
 
@@ -121,9 +114,9 @@ android {
         }
     }
 
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/INDEX.LIST'
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
     }
 }
 
@@ -131,14 +124,14 @@ dependencies {
     // Support Libraries
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.palette:palette:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.5.0'
     // Projects
     implementation project(':JMPDCommAndroid')
     // Libraries from maven
     implementation 'asia.ivity.android:drag-sort-listview:1.0'
-    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.6.0'
+    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.7.0'
     implementation 'asia.ivity.android:drag-sort-listview-apklib:1.0'
 }
 
@@ -154,9 +147,9 @@ class BrowseJavadoc implements TaskExecutionListener {
 
     @Override
     void afterExecute(final Task task, final TaskState taskState) {
-        if (taskState.executed && !taskState.failure && task.name.equals(mTask)) {
+        if (taskState.executed && !taskState.failure && task.name == mTask) {
             println "Javadoc built: " + mIndexFile
-            final def Class desktop = getClass().classLoader.loadClass("java.awt.Desktop")
+            final Class desktop = getClass().classLoader.loadClass("java.awt.Desktop")
 
             try {
                 desktop.newInstance().browse(mIndexFile.toURI())

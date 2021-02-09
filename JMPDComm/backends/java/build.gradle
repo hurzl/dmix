@@ -34,15 +34,15 @@ group "com.anpmech.mpd"
 version "1.0-SNAPSHOT"
 
 dependencies {
-    testImplementation 'junit:junit:4.13'
-    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.6.0'
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.7.0'
 }
 
 repositories {
     mavenCentral()
 }
 
-final def shortHash() {
+static final def shortHash() {
     return "git rev-parse --short HEAD".execute().text.trim()
 }
 
@@ -51,10 +51,10 @@ jar {
     from sourceSets.main.allSource
 
     manifest {
-        final def String javaVersion = System.getProperty('java.version')
-        final def String javaVendor = System.getProperty('java.vendor')
-        final def String graVersion = project.gradle.gradleVersion
-        final def String groVersion = GroovySystem.version
+        final String javaVersion = System.getProperty('java.version')
+        final String javaVendor = System.getProperty('java.vendor')
+        final String graVersion = project.gradle.gradleVersion
+        final String groVersion = GroovySystem.version
 
         attributes 'Package': "com.anpmech.mpd",
                 'Implementation-Title': project.name,
@@ -78,12 +78,12 @@ javadoc {
         showAll()
         author = true
         header = project.name
-        overview("src/main/overview.html");
+        overview("src/main/overview.html")
     }
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    classifier('javadoc')
     description "Generates a archive of the " + project.name + " directory."
     group = "documentation"
     from 'build/docs/javadoc'
@@ -131,9 +131,9 @@ class BrowseJavadoc implements TaskExecutionListener {
 
     @Override
     void afterExecute(final Task task, final TaskState taskState) {
-        if (taskState.executed && !taskState.failure && task.name.equals(mTask)) {
+        if (taskState.executed && !taskState.failure && task.name == mTask) {
             println "Javadoc built: " + mIndexFile
-            final def Class desktop = getClass().classLoader.loadClass("java.awt.Desktop");
+            final Class desktop = getClass().classLoader.loadClass("java.awt.Desktop")
 
             try {
                 desktop.newInstance().browse(mIndexFile.toURI())
@@ -141,4 +141,8 @@ class BrowseJavadoc implements TaskExecutionListener {
             }
         }
     }
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }

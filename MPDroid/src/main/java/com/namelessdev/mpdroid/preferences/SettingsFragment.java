@@ -28,7 +28,6 @@ import com.namelessdev.mpdroid.tools.Tools;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -94,28 +93,21 @@ public class SettingsFragment extends PreferenceFragment {
         mInformationScreen.setEnabled(isConnected);
 
         if (isConnected) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        mpd.getStatistics().waitForValidity();
-                    } catch (final InterruptedException ignored) {
-                    }
-
-                    final String versionText = mpd.getMpdVersion();
-                    final MPDStatistics mpdStatistics = mpd.getStatistics();
-
-                    mHandler.post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            mVersion.setSummary(versionText);
-                            mArtists.setSummary(String.valueOf(mpdStatistics.getArtists()));
-                            mAlbums.setSummary(String.valueOf(mpdStatistics.getAlbums()));
-                            mSongs.setSummary(String.valueOf(mpdStatistics.getSongs()));
-                        }
-                    });
+            new Thread(() -> {
+                try {
+                    mpd.getStatistics().waitForValidity();
+                } catch (final InterruptedException ignored) {
                 }
+
+                final String versionText = mpd.getMpdVersion();
+                final MPDStatistics mpdStatistics = mpd.getStatistics();
+
+                mHandler.post(() -> {
+                    mVersion.setSummary(versionText);
+                    mArtists.setSummary(String.valueOf(mpdStatistics.getArtists()));
+                    mAlbums.setSummary(String.valueOf(mpdStatistics.getAlbums()));
+                    mSongs.setSummary(String.valueOf(mpdStatistics.getSongs()));
+                });
             }).start();
         }
     }
@@ -168,13 +160,10 @@ public class SettingsFragment extends PreferenceFragment {
         mAlbumArtLibrary.setEnabled(mCheckBoxPreference.isChecked());
 
         final CheckBoxPreference lightTheme = (CheckBoxPreference) findPreference("lightTheme");
-        lightTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-                Tools.resetActivity(getActivity());
+        lightTheme.setOnPreferenceChangeListener((preference, newValue) -> {
+            Tools.resetActivity(getActivity());
 
-                return true;
-            }
+            return true;
         });
 
         /** Allow these to be changed individually, pauseOnPhoneStateChange might be overridden. */
@@ -202,15 +191,12 @@ public class SettingsFragment extends PreferenceFragment {
             new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.clearLocalCoverCache)
                     .setMessage(R.string.clearLocalCoverCachePrompt)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(final DialogInterface dialog, final int which) {
-                            // Todo : The covermanager must already have been
-                            // initialized, get rid of the getInstance arguments
-                            CoverManager.getInstance().clear();
-                            mCacheUsage1.setSummary("0.00B");
-                            mCacheUsage2.setSummary("0.00B");
-                        }
+                    .setPositiveButton(R.string.ok, (dialog, which) -> {
+                        // Todo : The covermanager must already have been
+                        // initialized, get rid of the getInstance arguments
+                        CoverManager.getInstance().clear();
+                        mCacheUsage1.setSummary("0.00B");
+                        mCacheUsage2.setSummary("0.00B");
                     })
                     .setNegativeButton(R.string.cancel, Tools.NOOP_CLICK_LISTENER)
                     .show();
@@ -244,7 +230,7 @@ public class SettingsFragment extends PreferenceFragment {
             }
             return true;
         } else if ("pauseOnPhoneStateChange".equals(preference.getKey())) {
-            /**
+            /*
              * Allow these to be changed individually,
              * pauseOnPhoneStateChange might be overridden.
              */

@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class PlaylistEditActivity extends MPDActivity implements StatusChangeListener,
         OnClickListener, AdapterView.OnItemClickListener {
@@ -75,14 +76,10 @@ public class PlaylistEditActivity extends MPDActivity implements StatusChangeLis
             }
             final AbstractMap<String, Object> itemFrom = mSongList.get(from);
             final Integer songID = (Integer) itemFrom.get(Music.RESPONSE_SONG_ID);
-            if (mIsPlayQueue) {
+            if (songID != null && mIsPlayQueue) {
                 mMPD.getPlaylist().move(songID, to);
             } else {
-                try {
-                    mMPD.movePlaylistSong(mPlaylist, from, to);
-                } catch (final IOException | MPDException e) {
-                    Log.e(TAG, "Failed to rename a playlist.", e);
-                }
+                mMPD.movePlaylistSong(mPlaylist, from, to);
                 update();
             }
             Tools.notifyUser("Updating ...");
@@ -120,7 +117,7 @@ public class PlaylistEditActivity extends MPDActivity implements StatusChangeLis
 
             final List<Integer> positions = new LinkedList<>();
             for (final AbstractMap<String, Object> item : copy) {
-                if (item.get("marked").equals(Boolean.TRUE)) {
+                if (Boolean.TRUE.equals(item.get("marked"))) {
                     positions.add((Integer) item.get(Music.RESPONSE_SONG_ID));
                     count++;
                 }
@@ -149,7 +146,7 @@ public class PlaylistEditActivity extends MPDActivity implements StatusChangeLis
         }
         setContentView(R.layout.playlist_editlist_activity);
 
-        mListView = (ListView) findViewById(android.R.id.list);
+        mListView = findViewById(android.R.id.list);
         mListView.setOnItemClickListener(this);
 
         if (mIsPlayQueue) {
@@ -175,7 +172,7 @@ public class PlaylistEditActivity extends MPDActivity implements StatusChangeLis
         trackList.setDragEnabled(true);
         trackList.setCacheColorHint(0);
 
-        final Button button = (Button) findViewById(R.id.Remove);
+        final Button button = findViewById(R.id.Remove);
         button.setOnClickListener(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -195,7 +192,7 @@ public class PlaylistEditActivity extends MPDActivity implements StatusChangeLis
             final long l) {
         final AbstractMap<String, Object> item = mSongList.get(i);
 
-        if (item.get("marked").equals(true)) {
+        if (Objects.equals(item.get("marked"), true)) {
             item.put("marked", false);
         } else {
             item.put("marked", true);
@@ -258,7 +255,7 @@ public class PlaylistEditActivity extends MPDActivity implements StatusChangeLis
         if (mIsPlayQueue) {
             // Mark running track...
             for (final AbstractMap<String, Object> song : mSongList) {
-                final int songId = ((Integer) song.get(Music.RESPONSE_SONG_ID)).intValue();
+                final int songId = (Integer) song.get(Music.RESPONSE_SONG_ID);
 
                 if (songId == mMPD.getStatus().getSongId()) {
                     song.put("play", android.R.drawable.ic_media_play);

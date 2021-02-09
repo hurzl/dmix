@@ -1351,8 +1351,7 @@ public class MPD {
     }
 
     @SuppressWarnings("TypeMayBeWeakened")
-    public void movePlaylistSong(final PlaylistFile playlist, final int from, final int to)
-            throws IOException, MPDException {
+    public void movePlaylistSong(final PlaylistFile playlist, final int from, final int to) {
         mConnection.submit(MPDCommand.MPD_CMD_PLAYLIST_MOVE, playlist.getFullPath(),
                 Integer.toString(from), Integer.toString(to));
     }

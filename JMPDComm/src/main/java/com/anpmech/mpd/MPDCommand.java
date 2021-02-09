@@ -85,6 +85,9 @@ public class MPDCommand {
 
     public static final String MPD_SEARCH_FILENAME = "filename";
 
+    /** Added in MPD protocol later (when?) */
+    public static final String MPD_READPICTURE = "readpicture";
+
     /** The class log identifier. */
     private static final String TAG = "MPDCommand";
 

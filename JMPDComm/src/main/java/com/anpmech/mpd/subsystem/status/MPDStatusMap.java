@@ -390,7 +390,8 @@ public class MPDStatusMap extends ResponseMap implements MPDStatus {
             // duration is the value after ":" in "time"
             final String value = getMapValue(RESPONSE_TIME);
             if (value != null) {
-                duration = (float)(Tools.parseInteger(value.substring(value.indexOf(':')+1))) * 1000f; // millisecs don't make sense here but are returned by definition
+                duration = (float) (Tools.parseInteger(value.substring(value.indexOf(':') + 1)))
+                        * 1000f; // millisecs don't make sense here but are returned by definition
             }
         }
         return duration;
@@ -411,7 +412,7 @@ public class MPDStatusMap extends ResponseMap implements MPDStatus {
             elapsedTime = Tools.parseLong(value.substring(0, value.indexOf(':')));
 
             if (isState(STATE_PLAYING)) {
-                /** We can't expect to always update right before this is called. */
+                /* We can't expect to always update right before this is called. */
                 elapsedTime += TimeUnit.MILLISECONDS.toSeconds(new Date().getTime() - mUpdateTime);
             }
         }
@@ -433,7 +434,6 @@ public class MPDStatusMap extends ResponseMap implements MPDStatus {
      * Retrieves error message.
      *
      * @return error message.
-     * @see MPDException#getAckCommandQueuePosition(String)
      * @see MPDException#getAckErrorCode(String)
      * @see MPDException#getMessage()
      */
@@ -625,7 +625,7 @@ public class MPDStatusMap extends ResponseMap implements MPDStatus {
         int volume = parseMapInteger(RESPONSE_VOLUME);
 
         if (volume != DEFAULT_INTEGER) {
-            /**
+            /*
              * If necessary, set within the bounds of the MPD protocol.
              */
             if (volume != VOLUME_UNAVAILABLE && volume < VOLUME_MIN) {
@@ -773,9 +773,10 @@ public class MPDStatusMap extends ResponseMap implements MPDStatus {
      * @see IdleSubsystemMonitor
      */
     public void update() throws IOException, MPDException {
-        final ResultFuture future = mConnection.submit(CMD_ACTION_STATUS);
-
-        update(new KeyValueResponse(future.get()));
+        if (mConnection != null) {
+            final ResultFuture future = mConnection.submit(CMD_ACTION_STATUS);
+            update(new KeyValueResponse(future.get()));
+        }
     }
 
     /**

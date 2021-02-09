@@ -224,15 +224,12 @@ public abstract class MPDConnection implements MPDConnectionListener {
      * @param port The media server port to connect to.
      */
     public void connect(final String host, final int port) {
-        final Runnable resolveHost = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    connect(InetAddress.getByName(host), port);
-                } catch (final UnknownHostException e) {
-                    mConnectionStatus.disconnectedCallbackComplete(
-                            "Unknown host: " + e.getLocalizedMessage());
-                }
+        final Runnable resolveHost = () -> {
+            try {
+                connect(InetAddress.getByName(host), port);
+            } catch (final UnknownHostException e) {
+                mConnectionStatus.disconnectedCallbackComplete(
+                        "Unknown host: " + e.getLocalizedMessage());
             }
         };
 
