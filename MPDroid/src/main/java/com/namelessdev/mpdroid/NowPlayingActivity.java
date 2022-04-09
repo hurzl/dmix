@@ -26,10 +26,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.annotation.StyleRes;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -37,6 +33,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.StyleRes;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 
 public class NowPlayingActivity extends MPDActivity {
@@ -72,7 +73,7 @@ public class NowPlayingActivity extends MPDActivity {
     }
 
     private ViewPager initializeNowPlayingPager() {
-        final ViewPager nowPlayingPager = (ViewPager) findViewById(R.id.pager);
+        final ViewPager nowPlayingPager = findViewById(R.id.pager);
         if (nowPlayingPager != null) {
             nowPlayingPager.setAdapter(new NowPlayingPagerAdapter(this));
             nowPlayingPager.addOnPageChangeListener(
@@ -147,11 +148,17 @@ public class NowPlayingActivity extends MPDActivity {
                     mApp.startStreaming();
                 }
                 break;
+            case R.id.GMM_Single:
+                MPDControl.run(MPDControl.ACTION_SINGLE);
+                break;
             case R.id.GMM_Consume:
                 MPDControl.run(MPDControl.ACTION_CONSUME);
                 break;
-            case R.id.GMM_Single:
-                MPDControl.run(MPDControl.ACTION_SINGLE);
+            case R.id.GMM_Repeat:
+                MPDControl.run(MPDControl.ACTION_TOGGLE_REPEAT);
+                break;
+            case R.id.GMM_Shuffle:
+                MPDControl.run(MPDControl.ACTION_TOGGLE_RANDOM);
                 break;
             case R.id.GMM_ShowNotification:
                 if (mApp.isNotificationActive()) {
@@ -165,10 +172,10 @@ public class NowPlayingActivity extends MPDActivity {
                 QueueControl.run(QueueControl.CLEAR);
                 Tools.notifyUser(R.string.playlistCleared);
                 break;
-            case R.id.PLM_Shuffle:
+/*            case R.id.PLM_Shuffle:
                 QueueControl.run(QueueControl.SHUFFLE);
                 Tools.notifyUser(R.string.playlistShuffled);
-                break;
+                break;*/
             /**
              * TODO: Better reimplementation of PLM_Save
              * (QueueFragment:onOptionsItemSelected(final MenuItem item))
@@ -239,6 +246,8 @@ public class NowPlayingActivity extends MPDActivity {
         menu.findItem(R.id.GMM_Stream).setChecked(isStreaming);
         menu.findItem(R.id.GMM_Single).setChecked(mpdStatus.isSingle());
         menu.findItem(R.id.GMM_Consume).setChecked(mpdStatus.isConsume());
+        menu.findItem(R.id.GMM_Repeat).setChecked(mpdStatus.isRepeat());
+        menu.findItem(R.id.GMM_Shuffle).setChecked(mpdStatus.isRandom());
 
         return true;
     }

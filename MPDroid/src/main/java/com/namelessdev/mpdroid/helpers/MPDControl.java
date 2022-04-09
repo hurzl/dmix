@@ -23,14 +23,15 @@ import com.anpmech.mpd.subsystem.Playback;
 import com.namelessdev.mpdroid.MPDApplication;
 import com.namelessdev.mpdroid.R;
 
-import androidx.annotation.IdRes;
-import androidx.annotation.StringDef;
 import android.util.Log;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.StringDef;
 
 /**
  * This class contains simple server control methods.
@@ -111,12 +112,12 @@ public final class MPDControl {
             case R.id.playpause:
                 run(ACTION_TOGGLE_PLAYBACK);
                 break;
-            case R.id.repeat:
+/*            case R.id.repeat:
                 run(ACTION_TOGGLE_REPEAT);
                 break;
             case R.id.shuffle:
                 run(ACTION_TOGGLE_RANDOM);
-                break;
+                break;*/
             case R.id.forward:
                 run(ACTION_FF);
                 break;

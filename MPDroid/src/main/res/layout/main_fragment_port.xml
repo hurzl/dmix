@@ -173,13 +173,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton
+        <!-- ImageButton // moved to menu
             android:id="@+id/shuffle"
             style="@style/PlayerButton"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="?attr/shuffleDisabled" />
+            android:src="?attr/shuffleDisabled" / -->
 
         <ImageButton
             android:id="@+id/prev"
@@ -229,13 +229,13 @@
             android:layout_weight="1"
             android:src="?attr/nextIcon" />
 
-        <ImageButton
+        <!-- ImageButton // moved to menu
             android:id="@+id/repeat"
             style="@style/PlayerButton"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="?attr/repeatDisabled" />
+            android:src="?attr/repeatDisabled" / -->
     </LinearLayout>
 
     <RelativeLayout

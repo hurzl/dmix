@@ -326,5 +326,7 @@
     <string name="mediaPlayerErrorUnsupported">Der Stream-Codec wird nicht unterstützt.</string>
     <string name="shufflePlaylist">Wiedergabeliste mischen</string>
     <string name="playlistShuffled">Wiedergabeliste wurde zufällig gemischt</string>
+    <string name="repeatMode">Wiederholen</string>
+    <string name="shuffleMode">Zufällig</string>
     <!-- End MediaPlayer Error Strings -->
 </resources>

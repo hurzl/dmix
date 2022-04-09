@@ -50,11 +50,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import androidx.annotation.AttrRes;
-import androidx.annotation.IdRes;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.core.widget.PopupMenuCompat;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,6 +73,12 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.IdRes;
+import androidx.core.widget.PopupMenuCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import static com.namelessdev.mpdroid.tools.Tools.notifyUser;
 
@@ -151,11 +152,11 @@ abstract class NowPlayingFragmentBase extends Fragment implements
 
     private ImageButton mREWButton = null;
 
-    private ImageButton mRepeatButton = null;
+//    private ImageButton mRepeatButton = null;
 
     private SharedPreferences mSharedPreferences;
 
-    private ImageButton mShuffleButton = null;
+//    private ImageButton mShuffleButton = null;
 
     private View mSongInfo = null;
 
@@ -349,8 +350,8 @@ abstract class NowPlayingFragmentBase extends Fragment implements
             volumeChanged(MPDStatusMap.VOLUME_UNAVAILABLE);
             updateStatus();
             updateTrackInfo(true);
-            setButtonAttribute(getRepeatAttribute(mMPDStatus.isRepeat()), mRepeatButton);
-            setButtonAttribute(getShuffleAttribute(mMPDStatus.isRandom()), mShuffleButton);
+//            setButtonAttribute(getRepeatAttribute(mMPDStatus.isRepeat()), mRepeatButton);
+//            setButtonAttribute(getShuffleAttribute(mMPDStatus.isRandom()), mShuffleButton);
             setStickerVisibility();
         }
     }
@@ -363,7 +364,7 @@ abstract class NowPlayingFragmentBase extends Fragment implements
      * @return The resulting ImageView.
      */
     private ImageView getCoverArt(final View view) {
-        final ImageView coverArt = (ImageView) view.findViewById(R.id.albumCover);
+        final ImageView coverArt = view.findViewById(R.id.albumCover);
         final PopupMenu coverMenu = new PopupMenu(mActivity, coverArt);
         final Menu menu = coverMenu.getMenu();
 
@@ -742,22 +743,10 @@ abstract class NowPlayingFragmentBase extends Fragment implements
 
         /** These get the event button, then setup listeners for them. */
         mPlayPauseButton = getEventButton(view, R.id.playpause, true);
-        mRepeatButton = getEventButton(view, R.id.repeat, false);
-        mShuffleButton = getEventButton(view, R.id.shuffle, false);
+//        mRepeatButton = getEventButton(view, R.id.repeat, false);
+//        mShuffleButton = getEventButton(view, R.id.shuffle, false);
         mFFButton = getEventButton(view, R.id.forward, false);
         mREWButton = getEventButton(view, R.id.rewind, false);
-        if (mSharedPreferences.getBoolean("enableRepeatAndShuffleButton", false)) {
-            mFFButton.setVisibility(View.GONE);
-            mREWButton.setVisibility(View.GONE);
-            mRepeatButton.setVisibility(View.VISIBLE);
-            mShuffleButton.setVisibility(View.VISIBLE);
-        } else {
-            mRepeatButton.setVisibility(View.GONE);
-            mShuffleButton.setVisibility(View.GONE);
-            mFFButton.setVisibility(View.VISIBLE);
-            mREWButton.setVisibility(View.VISIBLE);
-        }
-
         mStopButton = getEventButton(view, R.id.stop, true);
         applyViewVisibility(mStopButton, "enableStopButton");
 
@@ -951,12 +940,12 @@ abstract class NowPlayingFragmentBase extends Fragment implements
 
     @Override
     public void randomChanged() {
-        setButtonAttribute(getShuffleAttribute(mMPDStatus.isRandom()), mShuffleButton);
+//        setButtonAttribute(getShuffleAttribute(mMPDStatus.isRandom()), mShuffleButton);
     }
 
     @Override
     public void repeatChanged() {
-        setButtonAttribute(getRepeatAttribute(mMPDStatus.isRepeat()), mRepeatButton);
+//        setButtonAttribute(getRepeatAttribute(mMPDStatus.isRepeat()), mRepeatButton);
     }
 
     private void scrollToNowPlaying() {

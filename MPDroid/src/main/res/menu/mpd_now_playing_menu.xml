@@ -40,5 +40,15 @@
     <item
         android:id="@+id/GMM_bonjour"
         android:visible="false" />
+    <item
+        android:id="@+id/GMM_Repeat"
+        android:checkable="true"
+        android:orderInCategory="5"
+        android:title="@string/repeatMode" />
+    <item
+        android:id="@+id/GMM_Shuffle"
+        android:checkable="true"
+        android:orderInCategory="6"
+        android:title="@string/shuffleMode" />
 
 </menu>

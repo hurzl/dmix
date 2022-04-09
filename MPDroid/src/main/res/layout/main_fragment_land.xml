@@ -220,12 +220,12 @@
         android:layout_height="@dimen/playerbutton_height"
         android:gravity="center_horizontal">
 
-        <ImageButton
+        <!-- ImageButton
             android:id="@+id/shuffle"
             style="@style/PlayerButton"
             android:layout_width="@dimen/playerbutton_width"
             android:layout_height="wrap_content"
-            android:src="?attr/shuffleDisabled" />
+            android:src="?attr/shuffleDisabled" / -->
 
         <ImageButton
             android:id="@+id/prev"
@@ -270,12 +270,12 @@
             android:src="?attr/nextIcon" />
 
 
-        <ImageButton
+        <!-- ImageButton
             android:id="@+id/repeat"
             style="@style/PlayerButton"
             android:layout_width="@dimen/playerbutton_width"
             android:layout_height="wrap_content"
-            android:src="?attr/repeatDisabled" />
+            android:src="?attr/repeatDisabled" / -->
     </LinearLayout>
 
 </LinearLayout>
