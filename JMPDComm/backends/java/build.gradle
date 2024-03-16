@@ -35,7 +35,7 @@ version "1.0-SNAPSHOT"
 
 dependencies {
     testImplementation 'junit:junit:4.13.2'
-    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.7.0'
+//    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.7.0'
 }
 
 repositories {
@@ -83,7 +83,7 @@ javadoc {
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier('javadoc')
+//    classifier('javadoc')
     description "Generates a archive of the " + project.name + " directory."
     group = "documentation"
     from 'build/docs/javadoc'
@@ -143,6 +143,6 @@ class BrowseJavadoc implements TaskExecutionListener {
     }
 }
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility "11"
+    targetCompatibility "11"
 }
