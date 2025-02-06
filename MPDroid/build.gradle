@@ -32,12 +32,13 @@ static def gitShortHash() {
 
 android {
     namespace "com.namelessdev.mpdroid"
-    buildToolsVersion '34.0.0'
+//    buildTools '34.0.0'
     compileSdk 34
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 34
+        applicationId "com.namelessdev.mpdroid"
+        minSdkVersion 26
+        targetSdkVersion 33
         versionCode 58
         versionName "1.08 Beta 4 " + gitShortHash()
     }
@@ -130,9 +131,9 @@ dependencies {
     // Support Libraries
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.palette:palette:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.android.material:material:1.12.0'
     // Projects
     implementation project(':JMPDCommAndroid')
     // Libraries from maven

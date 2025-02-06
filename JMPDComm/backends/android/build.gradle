@@ -25,7 +25,6 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 apply plugin: 'com.android.library'
 
 repositories {
@@ -38,12 +37,12 @@ static final def shortHash() {
 }
 
 android {
-    namespace "com.namelessdev.mpdroid"
-    compileSdkVersion 34
-//    buildToolsVersion '30.0.3'
+    namespace "com.anpmech.mpd"
+    compileSdk 34
+    buildToolsVersion '35.0.0'
 
     defaultConfig {
-        minSdkVersion 9
+        minSdk 26
         targetSdkVersion 34
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -51,6 +50,11 @@ android {
     compileOptions {
         sourceCompatibility "11"
         targetCompatibility "11"
+    }
+
+    buildFeatures {
+        compose false
+        buildConfig true
     }
 
     sourceSets {
@@ -109,11 +113,11 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.annotation:annotation:1.7.1'
+    implementation 'androidx.annotation:annotation:1.9.1'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     // For JUnit 4
-    androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation 'androidx.test:rules:1.6.1'
 //    implementation 'org.realityforge.org.jetbrains.annotations:org.jetbrains.annotations:1.7.0'
 }
 
