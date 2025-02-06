@@ -303,7 +303,7 @@ public abstract class MPDActivity extends AppCompatActivity implements IdleSubsy
                 final Intent restartActivity =
                         packageManager.getLaunchIntentForPackage(getPackageName());
                 final PendingIntent relaunchMPDroid = PendingIntent.getActivity(this, 1,
-                        restartActivity, PendingIntent.FLAG_ONE_SHOT);
+                        restartActivity, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
                 /**
                  * Ready an alarm to restart MPDroid after MPD is launched.
