@@ -525,9 +525,7 @@ abstract class BrowseFragmentBase<T extends Item<T>> extends Fragment implements
 
         setupStandardToolbar(view);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mList.setNestedScrollingEnabled(true);
-        }
+        mList.setNestedScrollingEnabled(true);
 
         return view;
     }
@@ -696,13 +694,8 @@ abstract class BrowseFragmentBase<T extends Item<T>> extends Fragment implements
      * @param isAlwaysVisible The visibility of the scrollbar.
      */
     final void refreshFastScrollStyle(final int scrollbarStyle, final boolean isAlwaysVisible) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mList.setFastScrollAlwaysVisible(isAlwaysVisible);
-            mList.setScrollBarStyle(scrollbarStyle);
-        } else {
-            mList.setScrollBarStyle(scrollbarStyle);
-            mList.setFastScrollAlwaysVisible(isAlwaysVisible);
-        }
+        mList.setFastScrollAlwaysVisible(isAlwaysVisible);
+        mList.setScrollBarStyle(scrollbarStyle);
     }
 
     /**

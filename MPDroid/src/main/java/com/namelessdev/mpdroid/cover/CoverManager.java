@@ -290,22 +290,16 @@ public final class CoverManager {
         boolean isWifi = false;
 
         if (connectivityManager != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                final Network[] networks = connectivityManager.getAllNetworks();
+            final Network[] networks = connectivityManager.getAllNetworks();
 
-                for (final Network network : networks) {
-                    if (isWifi(connectivityManager.getNetworkInfo(network))) {
-                        /**
-                         * Using non-depreciated method causes MethodNotFoundException on
-                         * Android 5.1.1.
-                         */
-                        isWifi = ConnectivityManager.setProcessDefaultNetwork(network);
-                        break;
-                    }
-                }
-            } else {
-                if (isWifi(connectivityManager.getNetworkInfo(1))) {
-                    isWifi = true;
+            for (final Network network : networks) {
+                if (isWifi(connectivityManager.getNetworkInfo(network))) {
+                    /**
+                     * Using non-depreciated method causes MethodNotFoundException on
+                     * Android 5.1.1.
+                     */
+                    isWifi = ConnectivityManager.setProcessDefaultNetwork(network);
+                    break;
                 }
             }
         }

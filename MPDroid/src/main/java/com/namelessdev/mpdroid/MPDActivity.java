@@ -287,7 +287,8 @@ public abstract class MPDActivity extends AppCompatActivity implements IdleSubsy
      */
     private void launchMPD() {
         final boolean shouldLaunch = "127.0.0.1".equals(mApp.getConnectionSettings().getServer())
-                && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1;
+                // old Android only???   && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1
+                ;
 
         if (shouldLaunch && !isMPDRunning() && Tools.isPackageInstalled(MPD_PACKAGE_NAME)) {
             /**

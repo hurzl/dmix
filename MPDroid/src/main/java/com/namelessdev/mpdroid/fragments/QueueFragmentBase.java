@@ -802,13 +802,8 @@ abstract class QueueFragmentBase extends ListFragment implements StatusChangeLis
              */
             private void refreshFastScrollStyle(final int scrollbarStyle,
                     final boolean isAlwaysVisible) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    mList.setFastScrollAlwaysVisible(isAlwaysVisible);
-                    mList.setScrollBarStyle(scrollbarStyle);
-                } else {
-                    mList.setScrollBarStyle(scrollbarStyle);
-                    mList.setFastScrollAlwaysVisible(isAlwaysVisible);
-                }
+                mList.setFastScrollAlwaysVisible(isAlwaysVisible);
+                mList.setScrollBarStyle(scrollbarStyle);
             }
 
             @Override

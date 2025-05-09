@@ -254,7 +254,7 @@ public class AlbumsFragment extends BrowseFragment<Album> {
         bundle.putParcelable(Album.EXTRA, (Parcelable) mItems.get(position));
 
         // Terribly bugged
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        /*if (__WE_WANT_TRANSITIONS__) {
             final TransitionInflater inflater = TransitionInflater.from(activity);
             final ImageView albumCoverView = (ImageView) view.findViewById(R.id.albumCover);
             final String transitionName = albumCoverView.getTransitionName();

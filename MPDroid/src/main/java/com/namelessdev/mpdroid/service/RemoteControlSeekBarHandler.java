@@ -32,7 +32,6 @@ import java.util.Date;
  * A simple class to enable Android's RemoteControlClient seek bar. (Requires Android 4.3 and
  * higher).
  */
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class RemoteControlSeekBarHandler implements
         RemoteControlClient.OnPlaybackPositionUpdateListener,
         RemoteControlClient.OnGetPlaybackPositionListener, TrackPositionListener {

@@ -31,9 +31,7 @@ import com.anpmech.mpd.ResponseObject;
 
 import org.jetbrains.annotations.NotNull;
 
-import android.annotation.TargetApi;
 import android.media.MediaMetadata;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -93,7 +91,6 @@ public class Music extends AbstractMusic<Music> {
      * @param key      The key to store the items in.
      * @param response The response to iterate over to put into the metadata builder.
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private static void putResponseObject(final MediaMetadata.Builder metadata, final String key,
             final Iterable<? extends Item<?>> response) {
         for (final Item<?> item : response) {
@@ -107,7 +104,6 @@ public class Music extends AbstractMusic<Music> {
      * @param metadata The constructed {@code MediaMetadata.Builder} object to add the current
      *                 track metadata to.
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void getMediaMetadata(final MediaMetadata.Builder metadata) {
         final Album album = getAlbum();
 

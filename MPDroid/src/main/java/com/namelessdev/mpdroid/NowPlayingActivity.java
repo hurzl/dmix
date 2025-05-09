@@ -99,17 +99,14 @@ public class NowPlayingActivity extends MPDActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         /*final Window window = getWindow();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        }*/
+        */
         super.onCreate(savedInstanceState);
 
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            final Transition ts = new Fade();  //Slide(); //Explode();
+        /*  final Transition ts = new Fade();  //Slide(); //Explode();
             window.setEnterTransition(ts);
             window.setExitTransition(ts);
-        }*/
+        */
 
         if (mApp.isTabletUiEnabled()) {
             setContentView(R.layout.activity_now_playing_tablet);

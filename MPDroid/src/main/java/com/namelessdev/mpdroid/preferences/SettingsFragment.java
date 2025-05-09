@@ -145,9 +145,7 @@ public class SettingsFragment extends PreferenceFragment {
         }
 
         // Small seekbars don't work on lollipop
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            findPreference("smallSeekbars").setEnabled(false);
-        }
+        findPreference("smallSeekbars").setEnabled(false);
 
         mCacheUsage1 = (EditTextPreference) findPreference("cacheUsage1");
         mCacheUsage2 = (EditTextPreference) findPreference("cacheUsage2");

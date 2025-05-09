@@ -38,7 +38,9 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+
 import androidx.annotation.StringRes;
+
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -260,29 +262,8 @@ public final class StreamHandler implements
             windDownResources(BUFFERING_END);
         }
 
-        /**
-         * With MediaPlayer, there is a racy bug which affects, minimally, Android KitKat and lower.
-         * If mediaPlayer.prepareAsync() is called too soon after mediaPlayer.setDataSource(), and
-         * after the initial mediaPlayer.play(), general and non-specific errors are usually emitted
-         * for the first few 100 milliseconds.
-         *
-         * Sometimes, these errors result in nagging Log errors, sometimes these errors result in
-         * unrecoverable errors. This handler sets up a 1.5 second delay between
-         * mediaPlayer.setDataSource() and mediaPlayer.AsyncPrepare() whether first play after
-         * handler start or not.
-         *
-         * The magic number here can be adjusted if there are any more problems. I have witnessed
-         * these errors occur at 750ms, but never higher. It's worth doubling, even in optimal
-         * conditions, stream buffering is pretty slow anyhow. Adjust if necessary.
-         *
-         * This order is very specific and if interrupted can cause big problems.
-         */
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
-            final long asyncIdle = 1500L;
-            mHandler.sendEmptyMessageDelayed(PREPARE_ASYNC, asyncIdle);
-        } else {
-            prepareAsync();
-        }
+        prepareAsync();
+
     }
 
     /**
@@ -706,18 +687,8 @@ public final class StreamHandler implements
         }
 
         if (mMediaPlayer != null) {
-            /**
-             * Cannot run reset/release when buffering, MediaPlayer will ANR or crash MPDroid, at
-             * least on Android <5.0. Worst case, not resetting may cause a stale buffer to play at
-             * the beginning and restart buffering; not perfect, but this is a pretty good solution.
-             */
-            if (mPreparingStream && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
-                Log.w(TAG, "Media player paused during streaming, workarounds running.");
-                mHandler.removeMessages(PREPARE_ASYNC);
-            } else {
-                mMediaPlayer.release();
-                mMediaPlayer = null;
-            }
+            mMediaPlayer.release();
+            mMediaPlayer = null;
             mPreparingStream = false;
         }
     }
@@ -726,7 +697,6 @@ public final class StreamHandler implements
      * This happens at the beginning of beginStreaming() to populate all necessary resources for
      * handling the MediaPlayer stream.
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void windUpResources() {
         if (DEBUG) {
             Log.d(TAG, "Winding up resources.");
@@ -738,14 +708,12 @@ public final class StreamHandler implements
         mMediaPlayer.setOnErrorListener(this);
         mMediaPlayer.setWakeMode(mServiceContext, PowerManager.PARTIAL_WAKE_LOCK);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            final AudioAttributes audioAttributes =
-                    new AudioAttributes.Builder()
-                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                            .setUsage(AudioAttributes.USAGE_MEDIA)
-                            .build();
+        final AudioAttributes audioAttributes =
+                new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build();
 
-            mMediaPlayer.setAudioAttributes(audioAttributes);
-        }
+        mMediaPlayer.setAudioAttributes(audioAttributes);
     }
 }

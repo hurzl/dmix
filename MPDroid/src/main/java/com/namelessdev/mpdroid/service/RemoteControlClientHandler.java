@@ -98,12 +98,8 @@ public class RemoteControlClientHandler implements AlbumCoverHandler.FullSizeCal
                 RemoteControlClient.FLAG_KEY_MEDIA_NEXT |
                 RemoteControlClient.FLAG_KEY_MEDIA_STOP;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mSeekBar = new RemoteControlSeekBarHandler(serviceContext, mRemoteControlClient,
-                    controlFlags);
-        } else {
-            mRemoteControlClient.setTransportControlFlags(controlFlags);
-        }
+        mSeekBar = new RemoteControlSeekBarHandler(serviceContext, mRemoteControlClient,
+                controlFlags);
         start();
     }
 
@@ -214,18 +210,14 @@ public class RemoteControlClientHandler implements AlbumCoverHandler.FullSizeCal
      */
     private void setPlaybackState(final int playbackState) {
         mRemoteControlClient.setPlaybackState(playbackState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mSeekBar.setPlaybackState(playbackState);
-        }
+        mSeekBar.setPlaybackState(playbackState);
     }
 
     final void start() {
         mAudioManager.registerMediaButtonEventReceiver(mMediaButtonReceiverComponent);
         mAudioManager.registerRemoteControlClient(mRemoteControlClient);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mSeekBar.start();
-        }
+        mSeekBar.start();
     }
 
     /**
@@ -234,9 +226,7 @@ public class RemoteControlClientHandler implements AlbumCoverHandler.FullSizeCal
     final void stateChanged() {
         final MPDStatus status = mMPD.getStatus();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mSeekBar.updateSeekTime(status.getElapsedTime());
-        }
+        mSeekBar.updateSeekTime(status.getElapsedTime());
         getRemoteState(status.getState());
     }
 
@@ -251,9 +241,7 @@ public class RemoteControlClientHandler implements AlbumCoverHandler.FullSizeCal
             mAudioManager.unregisterMediaButtonEventReceiver(mMediaButtonReceiverComponent);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mSeekBar.stop();
-        }
+        mSeekBar.stop();
     }
 
     /**

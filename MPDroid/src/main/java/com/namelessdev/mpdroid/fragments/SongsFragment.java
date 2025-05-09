@@ -645,7 +645,7 @@ public class SongsFragment extends BrowseFragment<Music> implements
             mHeaderInfo.setSelected(true);
             if (mCoverHelper != null) {
                 // Delay the cover art download for Lollipop transition
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mFirstRefresh) {
+                if (mFirstRefresh) {
                     // Hardcode a delay, we don't have a transition end callback ...
                     // TODO : Refactor this with "onSharedElementEnd", if it's worth it.
                     mHandler.postDelayed(new Runnable() {
