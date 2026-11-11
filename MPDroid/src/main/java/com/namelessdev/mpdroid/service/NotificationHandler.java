@@ -28,6 +28,7 @@ import com.namelessdev.mpdroid.helpers.MPDControl;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -54,6 +55,12 @@ public class NotificationHandler implements AlbumCoverHandler.NotificationCallba
     public static final int PERSISTENT_OVERRIDDEN = LOCAL_UID + 4;
 
     private static final int NOTIFICATION_ID = 1;
+
+    /**
+     * The {@link android.app.NotificationChannel} identifier for the now playing notification,
+     * required on Android 8.0 (API 26) and above.
+     */
+    private static final String NOTIFICATION_CHANNEL_ID = "now_playing";
 
     private static final String TAG = "NotificationHandler";
 
@@ -85,6 +92,8 @@ public class NotificationHandler implements AlbumCoverHandler.NotificationCallba
         mNotificationManager = (NotificationManager) mServiceContext
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
+        createNotificationChannel();
+
         final RemoteViews resultView = new RemoteViews(mServiceContext.getPackageName(),
                 R.layout.notification);
 
@@ -94,6 +103,20 @@ public class NotificationHandler implements AlbumCoverHandler.NotificationCallba
         buildExpandedNotification();
 
         mIsActive = true;
+    }
+
+    /**
+     * Create the notification channel required to display notifications on Android 8.0
+     * (API 26) and above.
+     */
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+                    mServiceContext.getString(R.string.nowPlaying),
+                    NotificationManager.IMPORTANCE_LOW);
+
+            mNotificationManager.createNotificationChannel(channel);
+        }
     }
 
     /**
@@ -107,10 +130,11 @@ public class NotificationHandler implements AlbumCoverHandler.NotificationCallba
         final Intent musicPlayerActivity = new Intent(context, MainMenuActivity.class);
         final PendingIntent notificationClick = PendingIntent
                 .getActivity(context, 0, musicPlayerActivity,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setSmallIcon(R.drawable.icon_notification);
+        builder.setChannelId(NOTIFICATION_CHANNEL_ID);
         builder.setContentIntent(notificationClick);
         builder.setStyle(new NotificationCompat.BigTextStyle());
 
@@ -224,7 +248,8 @@ public class NotificationHandler implements AlbumCoverHandler.NotificationCallba
     private PendingIntent buildPendingIntent(final String action) {
         final Intent intent = new Intent(mServiceContext, RemoteControlReceiver.class);
         intent.setAction(action);
-        return PendingIntent.getBroadcast(mServiceContext, 0, intent, 0);
+        return PendingIntent.getBroadcast(mServiceContext, 0, intent,
+                PendingIntent.FLAG_IMMUTABLE);
     }
 
     final boolean isActive() {

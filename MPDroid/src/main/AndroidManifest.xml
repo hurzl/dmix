@@ -36,6 +36,13 @@
     <!-- Required to get current WiFi network SSID -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- Foreground service for the media player service, required for targetSdk 34 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+    <!-- Now playing notification, required to show notifications on Android 13+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name=".MPDApplication"
         android:allowBackup="true"
@@ -126,6 +133,7 @@
         <service
             android:name=".service.MPDroidService"
             android:exported="false"
+            android:foregroundServiceType="mediaPlayback"
             android:icon="@drawable/icon"
             android:process=":MPDroidService" />
 

@@ -56,6 +56,12 @@ public class SimpleWidgetProvider extends AppWidgetProvider {
     }
 
     /**
+     * The {@link PendingIntent} flag combination for app-built control intents. Immutable is
+     * required for apps targeting API 31 and above.
+     */
+    static final int PENDING_INTENT_FLAGS = PendingIntent.FLAG_IMMUTABLE;
+
+    /**
      * Link up various button actions using {@link PendingIntent}.
      *
      * @param context The current context.
@@ -67,25 +73,25 @@ public class SimpleWidgetProvider extends AppWidgetProvider {
 
         // text button to start full app
         intent = new Intent(context, MainMenuActivity.class);
-        pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        pendingIntent = PendingIntent.getActivity(context, 0, intent, PENDING_INTENT_FLAGS);
         views.setOnClickPendingIntent(R.id.control_app, pendingIntent);
 
         // prev button
         intent = new Intent(context, WidgetHelperService.class);
         intent.setAction(MPDControl.ACTION_PREVIOUS);
-        pendingIntent = PendingIntent.getService(context, 0, intent, 0);
+        pendingIntent = PendingIntent.getService(context, 0, intent, PENDING_INTENT_FLAGS);
         views.setOnClickPendingIntent(R.id.control_prev, pendingIntent);
 
         // play/pause button
         intent = new Intent(context, WidgetHelperService.class);
         intent.setAction(MPDControl.ACTION_TOGGLE_PLAYBACK);
-        pendingIntent = PendingIntent.getService(context, 0, intent, 0);
+        pendingIntent = PendingIntent.getService(context, 0, intent, PENDING_INTENT_FLAGS);
         views.setOnClickPendingIntent(R.id.control_play, pendingIntent);
 
         // next button
         intent = new Intent(context, WidgetHelperService.class);
         intent.setAction(MPDControl.ACTION_NEXT);
-        pendingIntent = PendingIntent.getService(context, 0, intent, 0);
+        pendingIntent = PendingIntent.getService(context, 0, intent, PENDING_INTENT_FLAGS);
         views.setOnClickPendingIntent(R.id.control_next, pendingIntent);
     }
 

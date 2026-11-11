@@ -51,9 +51,20 @@ android {
         buildConfig true
     }
 
+    signingConfigs {
+        release {
+            storeFile file(System.getenv('MPDROID_STORE_FILE') ?:
+                    "${System.getProperty('user.home')}/mpdroid-release.keystore")
+            storePassword System.getenv('MPDROID_STORE_PASSWORD') ?: 'android'
+            keyAlias System.getenv('MPDROID_KEY_ALIAS') ?: 'mpdroid'
+            keyPassword System.getenv('MPDROID_KEY_PASSWORD') ?: 'android'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
         }
     }
 
