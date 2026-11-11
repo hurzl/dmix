@@ -24,11 +24,14 @@ import com.namelessdev.mpdroid.preferences.ConnectionModifier;
 import com.namelessdev.mpdroid.preferences.ConnectionSettings;
 import com.namelessdev.mpdroid.tools.Tools;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -37,6 +40,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -139,6 +144,22 @@ public class MainMenuActivity extends MPDActivity implements
 
         /* Reset the persistent override when the application is reset. */
         mApp.setPersistentOverride(false);
+
+        requestNotificationPermission();
+    }
+
+    /**
+     * Request the {@link Manifest.permission#POST_NOTIFICATIONS} runtime permission on
+     * Android 13 (API 33) and above, which is required to display the now playing
+     * notification.
+     */
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
+                        PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0);
+        }
     }
 
     @Override

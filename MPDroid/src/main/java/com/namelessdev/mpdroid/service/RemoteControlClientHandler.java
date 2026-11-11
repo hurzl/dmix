@@ -88,9 +88,13 @@ public class RemoteControlClientHandler implements AlbumCoverHandler.FullSizeCal
 
         final Intent intent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         intent.setComponent(mMediaButtonReceiverComponent);
+        /**
+         * This PendingIntent must be mutable: the framework delivers media button key events by
+         * filling in the {@link Intent#EXTRA_KEY_EVENT} extra on the broadcast.
+         */
         mRemoteControlClient = new RemoteControlClient(PendingIntent
                 .getBroadcast(serviceContext /*context*/, 0 /*requestCode, ignored*/,
-                        intent /*intent*/, 0 /*flags*/));
+                        intent /*intent*/, PendingIntent.FLAG_MUTABLE /*flags*/));
 
         final int controlFlags = RemoteControlClient.FLAG_KEY_MEDIA_PLAY |
                 RemoteControlClient.FLAG_KEY_MEDIA_PAUSE |
